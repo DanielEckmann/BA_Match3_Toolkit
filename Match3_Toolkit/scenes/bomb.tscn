@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bo56teruj71wy"]
+
+[ext_resource type="PackedScene" uid="uid://bqjh8mlm4bk2q" path="res://scenes/piece.tscn" id="1_hjble"]
+[ext_resource type="Script" path="res://scripts/bomb.gd" id="2_tpij6"]
+
+[node name="bomb" instance=ExtResource("1_hjble")]
+script = ExtResource("2_tpij6")
