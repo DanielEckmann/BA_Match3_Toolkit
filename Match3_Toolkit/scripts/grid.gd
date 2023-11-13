@@ -26,7 +26,6 @@ var sprites = [
 	preload("res://Match 3 Assets/Pieces/Blue Piece.png")
 ]
 
-
 var bomb_sprites = [
 	preload("res://Match 3 Assets/Pieces/Yellow Row.png"),
 	preload("res://Match 3 Assets/Pieces/Yellow Column.png"),
