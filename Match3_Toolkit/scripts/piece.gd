@@ -4,11 +4,12 @@ extends Node2D
 
 class_name Piece
 
-enum colors {YELLOW, PINK, ORANGE, LIGHT_GREEN, GREEN, BLUE}
+enum colors {YELLOW, PINK, ORANGE, LIGHT_GREEN, GREEN, BLUE, NONE}
 
 @export var color: colors
 @export var sprite: CompressedTexture2D
 @export var health: int
+@export var movable: bool
 
 var move_tween
 var matched = false

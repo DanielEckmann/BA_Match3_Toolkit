@@ -4,7 +4,7 @@ extends Node2D
 # however most of it heavily changed. Where code was taken as-is, it is marked by a comment
 
 enum states {WAIT, MOVE}
-enum colors {YELLOW, PINK, ORANGE, LIGHT_GREEN, GREEN, BLUE}
+enum colors {YELLOW, PINK, ORANGE, LIGHT_GREEN, GREEN, BLUE, NONE}
 enum bomb_types {HORIZONTAL, VERTICAL, COLOR, RADIUS}
 
 var state
@@ -55,6 +55,7 @@ var bomb_sprites = [
 
 var piece_prefab = preload("res://scenes/piece.tscn")
 var bomb_prefab = preload("res://scenes/bomb.tscn")
+var obstacle_prefab = preload("res://scenes/obstacle.tscn")
 var bomb_dict = {}
 class Tile_data:
 	var pos: Vector2
@@ -66,6 +67,8 @@ class Tile_data:
 
 
 var all_pieces = []
+
+var obstacles: PackedVector2Array = [Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5)]
 
 var game_start = true
 
@@ -106,8 +109,15 @@ func _input(event):
 func spawn_pieces():
 	if game_start:
 		var type_arr = []
-		for k in range (0, colors.size()):
+		for k in range (0, colors.size() - 1):
 			type_arr.append(k)
+		
+		for o in obstacles:
+			var obstacle = obstacle_prefab.instantiate()
+			add_child(obstacle)
+			obstacle.set_position(grid_to_pixel(o.x, o.y + y_offset))
+			obstacle.move(grid_to_pixel(o.x, o.y))
+			all_pieces[o.x][o.y] = obstacle
 		
 		for i in width:
 			for j in height:
@@ -137,7 +147,7 @@ func spawn_pieces():
 				all_pieces[i][j].moved = false
 	else:
 		var type_arr = []
-		for k in range (0, colors.size()):
+		for k in range (0, colors.size() - 1):
 			type_arr.append(k)
 		
 		var spawned_pieces = []
@@ -168,7 +178,7 @@ func swap_pieces(loc, dir):
 	var first_piece = all_pieces[loc.x][loc.y]
 	var other_piece = all_pieces[loc.x + dir.x][loc.y + dir.y]
 	
-	if(first_piece == null || other_piece == null):
+	if(first_piece == null || other_piece == null) || (!first_piece.movable || !other_piece.movable):
 		return
 	
 	state = states.WAIT
@@ -221,7 +231,7 @@ func get_connected_shapes():
 	for i in width:
 		for j in height:
 			var piece = all_pieces[i][j]
-			if visited_pieces.has(piece):
+			if visited_pieces.has(piece) || piece.color == colors.NONE:
 				continue
 			var queue = []
 			var shape = []
@@ -256,10 +266,11 @@ func get_match_centers():
 			var neighbors_h = get_horizontal_neighbors(pixel_to_grid(tile.pos))
 			var neighbors_v = get_vertical_neighbors(pixel_to_grid(tile.pos))
 			
-			var is_center_h = true
-			var is_center_v = true
+			var is_center_h = false
+			var is_center_v = false
 			
 			if neighbors_h.size() >= 2:
+				is_center_h = true
 				var is_center = true
 				for n in neighbors_h:
 					if n.color != tile.color:
@@ -272,6 +283,7 @@ func get_match_centers():
 					match_centers.append(tile)
 			
 			if neighbors_v.size() >= 2:
+				is_center_v = true
 				var is_center = true
 				for n in neighbors_v:
 					if n.color != tile.color:
@@ -483,7 +495,7 @@ func collapse_columns():
 		for j in height:
 			if all_pieces[i][j] == null:
 				for k in range(j + 1, height):
-					if all_pieces[i][k] != null:
+					if all_pieces[i][k] != null && all_pieces[i][k].movable:
 						all_pieces[i][k].move(grid_to_pixel(i, j))
 						all_pieces[i][j] = all_pieces[i][k]
 						all_pieces[i][k] = null
