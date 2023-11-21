@@ -16,8 +16,8 @@ var state
 @export var offset: int
 @export var y_offset: int
 @export var use_bombs: bool
-@export var use_c_bombs: bool
-@export var c_bomb_limit: int
+@export var use_p_bombs: bool
+@export var p_bomb_limit: int
 
 var sprites = [
 	preload("res://Match 3 Assets/Pieces/Yellow Piece.png"),
@@ -73,7 +73,7 @@ var all_pieces = []
 var obstacles: PackedVector2Array = [Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5)]
 
 var game_start = true
-var c_bomb_used = false
+var p_bomb_used = false
 
 # touch variables
 var first_touch = Vector2(0, 0)
@@ -95,9 +95,9 @@ func _process(delta):
 
 # This function was taken from source outlined at the top
 func _input(event):
-	if Input.is_action_just_pressed("right_click") && use_c_bombs:
-		if !c_bomb_used && state == states.MOVE && is_in_grid(pixel_to_grid(get_global_mouse_position())):
-			color_bomb(pixel_to_grid(get_global_mouse_position()), colors.BLUE)
+	if Input.is_action_just_pressed("right_click") && use_p_bombs:
+		if !p_bomb_used && state == states.MOVE && is_in_grid(pixel_to_grid(get_global_mouse_position())):
+			paint_bomb(pixel_to_grid(get_global_mouse_position()), colors.BLUE)
 	
 	if Input.is_action_just_pressed("ui_touch"):
 		if state == states.MOVE && is_in_grid(pixel_to_grid(get_global_mouse_position())):
@@ -180,8 +180,8 @@ func spawn_pieces():
 		
 		find_matches()
 		
-		if use_c_bombs:
-			c_bomb_used = false
+		if use_p_bombs:
+			p_bomb_used = false
 
 # This function was taken from source outlined at the top
 func swap_pieces(loc, dir):
@@ -385,8 +385,8 @@ func spawn_bombs():
 		instantiate_bomb(t.pos, t.color, bomb_dict[t])
 	bomb_dict.clear()
 
-func color_bomb(pos, color):
-	if c_bomb_limit <= 0:
+func paint_bomb(pos, color):
+	if p_bomb_limit <= 0:
 		return
 	
 	var neighbors = get_neighbors(pos, true)
@@ -394,8 +394,8 @@ func color_bomb(pos, color):
 		n.set_color(color, sprites[color])
 	all_pieces[pos.x][pos.y].set_color(color, sprites[color])
 	
-	c_bomb_used = true
-	c_bomb_limit -= 1
+	p_bomb_used = true
+	p_bomb_limit -= 1
 
 func damage(array):
 	for i in array:
