@@ -28,6 +28,13 @@ func set_attributes(color, sprite, health):
 	var s = get_node("Sprite2D")
 	s.set_texture(sprite)
 
+func set_color(color, sprite):
+	self.color = color
+	self.sprite = sprite
+	
+	var s = get_node("Sprite2D")
+	s.set_texture(sprite)
+
 func move(target):
 	move_tween = self.create_tween()
 	move_tween.tween_property(self, "position", target, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
