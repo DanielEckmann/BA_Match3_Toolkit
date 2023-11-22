@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ds1ndtcqml1ft"]
 
-[ext_resource type="PackedScene" uid="uid://bqjh8mlm4bk2q" path="res://scenes/piece.tscn" id="1_lkhs7"]
+[ext_resource type="PackedScene" uid="uid://bqjh8mlm4bk2q" path="res://scenes/pieces/piece.tscn" id="1_lkhs7"]
 [ext_resource type="Script" path="res://scripts/Jellyfish.gd" id="2_ma6am"]
 
 [node name="Jellyfish" instance=ExtResource("1_lkhs7")]

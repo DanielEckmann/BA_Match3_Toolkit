@@ -1,10 +1,13 @@
 [gd_scene load_steps=2 format=3 uid="uid://bqjh8mlm4bk2q"]
 
-[ext_resource type="Script" path="res://scripts/piece.gd" id="1_hl7l2"]
+[ext_resource type="Script" path="res://scripts/piece.gd" id="1_hj6ok"]
 
 [node name="piece" type="Node2D" groups=["movable"]]
-script = ExtResource("1_hl7l2")
+script = ExtResource("1_hj6ok")
 movable = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+
+[node name="BlockSprite" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)

@@ -55,9 +55,9 @@ var bomb_sprites = [
 	preload("res://Match 3 Assets/Pieces/Rainbow.png")
 ]
 
-var piece_prefab = preload("res://scenes/piece.tscn")
-var bomb_prefab = preload("res://scenes/bomb.tscn")
-var obstacle_prefab = preload("res://scenes/obstacle.tscn")
+var piece_prefab = preload("res://scenes/pieces/piece.tscn")
+var bomb_prefab = preload("res://scenes/pieces/gadgets/bomb.tscn")
+var obstacle_prefab = preload("res://scenes/pieces/obstacles/obstacle.tscn")
 var bomb_dict = {}
 class Tile_data:
 	var pos: Vector2
@@ -189,6 +189,9 @@ func swap_pieces(loc, dir):
 	var other_piece = all_pieces[loc.x + dir.x][loc.y + dir.y]
 	
 	if(first_piece == null || other_piece == null) || (!first_piece.movable || !other_piece.movable):
+		return
+	
+	if first_piece.blocked || other_piece.blocked:
 		return
 	
 	state = states.WAIT

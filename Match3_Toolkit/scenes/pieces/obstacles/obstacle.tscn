@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d282tr31d1kp3"]
 
-[ext_resource type="PackedScene" uid="uid://bqjh8mlm4bk2q" path="res://scenes/piece.tscn" id="1_y4vem"]
+[ext_resource type="PackedScene" uid="uid://bqjh8mlm4bk2q" path="res://scenes/pieces/piece.tscn" id="1_y4vem"]
 [ext_resource type="Texture2D" uid="uid://bf0oes61krqhs" path="res://Match 3 Assets/Obstacles/Concrete.png" id="2_0xdg5"]
 [ext_resource type="Script" path="res://scripts/obstacle.gd" id="2_d6v20"]
 

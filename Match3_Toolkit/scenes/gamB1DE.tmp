@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://bu2asn0r1ys43"]
+
+[ext_resource type="Texture2D" uid="uid://d4mqvultcx3h6" path="res://Match 3 Assets/UI/Backgrounds/background 2.png" id="1_tuor0"]
+[ext_resource type="Texture2D" uid="uid://c8sxfx358r6tm" path="res://Match 3 Assets/UI/Top UI v 2.png" id="2_2k40v"]
+[ext_resource type="Texture2D" uid="uid://uqqjlwogfame" path="res://Match 3 Assets/UI/Bottom UI v 2.png" id="3_ugvqe"]
+[ext_resource type="Script" path="res://scripts/grid.gd" id="4_m8tuw"]
+[ext_resource type="Script" path="res://scripts/GoalCounter.gd" id="5_w6cps"]
+
+[node name="game_window" type="Node2D"]
+
+[node name="background" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_tuor0")
+
+[node name="top_ui" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_2k40v")
+
+[node name="bottom_ui" type="TextureRect" parent="."]
+offset_top = 928.0
+offset_right = 576.0
+offset_bottom = 1020.0
+texture = ExtResource("3_ugvqe")
+
+[node name="grid" type="Node2D" parent="."]
+script = ExtResource("4_m8tuw")
+width = 8
+height = 10
+start = Vector2(64, 800)
+offset = 64
+y_offset = 2
+use_bombs = true
+use_p_bombs = true
+p_bomb_limit = 3
+
+[node name="destroy_timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="collapse_timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="refill_timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="GoalCounter" type="Node2D" parent="."]
+script = ExtResource("5_w6cps")
+
+[connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
+[connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
+[connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]

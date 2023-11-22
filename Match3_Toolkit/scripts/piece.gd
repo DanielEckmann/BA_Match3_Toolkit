@@ -15,7 +15,9 @@ var move_tween
 var matched = false
 var match_magnitude = 0
 var moved = false
+var blocked = false
 var pos
+var block_sprite = preload("res://Match 3 Assets/Obstacles/Locks.png")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -51,10 +53,24 @@ func _process(delta):
 	pass
 
 func take_damage(amount):
+	if blocked:
+		unblock()
+		return
+	
 	health -= amount
 	if health <= 0:
 		destroy()
 	match_magnitude = 0
+
+func block():
+	blocked = true
+	var s = self.get_node("BlockSprite")
+	s.set_texture(block_sprite)
+
+func unblock():
+	blocked = false
+	var s = self.get_node("BlockSprite")
+	s.set_texture(null)
 
 func destroy():
 	dim()
