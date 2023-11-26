@@ -83,6 +83,7 @@ var first_touch = Vector2(0, 0)
 var final_touch = Vector2(0, 0)
 var controlling = false
 
+"""SYSTEM FUNCTIONS"""
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	state = states.WAIT
@@ -117,6 +118,88 @@ func _input(event):
 			final_touch = get_global_mouse_position()
 			if !use_collapse:
 				touch_difference(pixel_to_grid(first_touch), pixel_to_grid(final_touch))
+
+"""INPUT FUNCTIONS"""
+
+func collapse_position(pos):
+	state = states.WAIT
+	
+	var piece = all_pieces[pos.x][pos.y]
+	var visited_pieces = []
+	var queue = []
+	var shape = []
+	queue.push_back(piece)
+	visited_pieces.append(piece)
+	
+	while !queue.is_empty():
+		var curr = queue.pop_front()
+		shape.append(curr)
+		var neighbors = get_neighbors(pixel_to_grid(curr.pos), false)
+		if neighbors != null:
+			for n in neighbors:
+				if n.color == curr.color && !visited_pieces.has(n):
+					queue.push_back(n)
+					visited_pieces.append(n)
+	
+	damage(shape)
+	get_parent().get_node("destroy_timer").start()
+
+# This function was taken from source outlined at the top
+func touch_difference(pos_1, pos_2):
+	var diff = pos_2 - pos_1
+	if abs(diff.x) > abs(diff.y):
+		if diff.x > 0:
+			swap_pieces(pos_1, Vector2.RIGHT)
+		elif diff.x < 0:
+			swap_pieces(pos_1, Vector2.LEFT)
+	elif abs(diff.y) > abs(diff.x):
+		# Vector UP is (0, -1) and DOWN is (0, 1), so a bit of confusing naming
+		if diff.y > 0:
+			swap_pieces(pos_1, Vector2.DOWN)
+		elif diff.y < 0:
+			swap_pieces(pos_1, Vector2.UP)
+
+# This function was taken from source outlined at the top
+func swap_pieces(loc, dir):
+	var first_piece = all_pieces[loc.x][loc.y]
+	var other_piece = all_pieces[loc.x + dir.x][loc.y + dir.y]
+	
+	if(first_piece == null || other_piece == null) || (!first_piece.movable || !other_piece.movable):
+		return
+	
+	if first_piece.blocked || other_piece.blocked:
+		return
+	
+	state = states.WAIT
+	
+	all_pieces[loc.x][loc.y] = other_piece
+	all_pieces[loc.x + dir.x][loc.y + dir.y] = first_piece
+	
+	first_piece.move(grid_to_pixel(loc.x + dir.x, loc.y + dir.y))
+	other_piece.move(grid_to_pixel(loc.x, loc.y))
+	
+	if !find_matches():
+		all_pieces[loc.x][loc.y] = first_piece
+		all_pieces[loc.x + dir.x][loc.y + dir.y] = other_piece
+	
+		other_piece.move(grid_to_pixel(loc.x + dir.x, loc.y + dir.y))
+		first_piece.move(grid_to_pixel(loc.x, loc.y))
+		
+		state = states.MOVE
+
+func paint_bomb(pos, color):
+	if p_bomb_limit <= 0:
+		return
+	
+	var neighbors = get_neighbors(pos, true)
+	for n in neighbors:
+		n.set_color(color, sprites[color])
+	all_pieces[pos.x][pos.y].set_color(color, sprites[color])
+	
+	p_bomb_used = true
+	p_bomb_limit -= 1
+
+"""GAME FUNCTIONS"""
 
 # This was originally adapted from the source above, but heavily changed
 func spawn_pieces():
@@ -189,166 +272,6 @@ func spawn_pieces():
 		if use_p_bombs:
 			p_bomb_used = false
 
-func collapse_position(pos):
-	state = states.WAIT
-	
-	var piece = all_pieces[pos.x][pos.y]
-	var visited_pieces = []
-	var queue = []
-	var shape = []
-	queue.push_back(piece)
-	visited_pieces.append(piece)
-	
-	while !queue.is_empty():
-		var curr = queue.pop_front()
-		shape.append(curr)
-		var neighbors = get_neighbors(pixel_to_grid(curr.pos), false)
-		if neighbors != null:
-			for n in neighbors:
-				if n.color == curr.color && !visited_pieces.has(n):
-					queue.push_back(n)
-					visited_pieces.append(n)
-	
-	damage(shape)
-	get_parent().get_node("destroy_timer").start()
-
-# This function was taken from source outlined at the top
-func swap_pieces(loc, dir):
-	var first_piece = all_pieces[loc.x][loc.y]
-	var other_piece = all_pieces[loc.x + dir.x][loc.y + dir.y]
-	
-	if(first_piece == null || other_piece == null) || (!first_piece.movable || !other_piece.movable):
-		return
-	
-	if first_piece.blocked || other_piece.blocked:
-		return
-	
-	state = states.WAIT
-	
-	all_pieces[loc.x][loc.y] = other_piece
-	all_pieces[loc.x + dir.x][loc.y + dir.y] = first_piece
-	
-	first_piece.move(grid_to_pixel(loc.x + dir.x, loc.y + dir.y))
-	other_piece.move(grid_to_pixel(loc.x, loc.y))
-	
-	if !find_matches():
-		all_pieces[loc.x][loc.y] = first_piece
-		all_pieces[loc.x + dir.x][loc.y + dir.y] = other_piece
-	
-		other_piece.move(grid_to_pixel(loc.x + dir.x, loc.y + dir.y))
-		first_piece.move(grid_to_pixel(loc.x, loc.y))
-		
-		state = states.MOVE
-
-# This function was taken from source outlined at the top
-func touch_difference(pos_1, pos_2):
-	var diff = pos_2 - pos_1
-	if abs(diff.x) > abs(diff.y):
-		if diff.x > 0:
-			swap_pieces(pos_1, Vector2.RIGHT)
-		elif diff.x < 0:
-			swap_pieces(pos_1, Vector2.LEFT)
-	elif abs(diff.y) > abs(diff.x):
-		# Vector UP is (0, -1) and DOWN is (0, 1), so a bit of confusing naming
-		if diff.y > 0:
-			swap_pieces(pos_1, Vector2.DOWN)
-		elif diff.y < 0:
-			swap_pieces(pos_1, Vector2.UP)
-
-# This function was taken from source outlined at the top
-func match_at(column, row, type):
-	# this function checks if a match is created on initial generation of the board only
-	if column > 1:
-		if (all_pieces[column - 1][row].color == type && all_pieces[column - 2][row].color == type):
-			return true
-	if row > 1:
-		if (all_pieces[column][row - 1].color == type && all_pieces[column][row - 2].color == type):
-			return true
-	return false
-
-func get_connected_shapes():
-	var visited_pieces = []
-	var shapes_array = []
-	
-	for i in width:
-		for j in height:
-			var piece = all_pieces[i][j]
-			if visited_pieces.has(piece) || piece.color == colors.NONE:
-				continue
-			var queue = []
-			var shape = []
-			queue.push_back(piece)
-			visited_pieces.append(piece)
-			
-			while !queue.is_empty():
-				var curr = queue.pop_front()
-				shape.append(curr)
-				var neighbors = get_neighbors(pixel_to_grid(curr.pos), false)
-				if neighbors != null:
-					for n in neighbors:
-						if n.color == curr.color && !visited_pieces.has(n):
-							queue.push_back(n)
-							visited_pieces.append(n)
-			
-			if shape.size() >= 3:
-				shapes_array.append(shape)
-	
-	return shapes_array
-
-func get_match_centers():
-	var shapes = get_connected_shapes()
-	
-	if shapes.size() == 0:
-		return null
-	
-	var match_centers = []
-	
-	for s in shapes:
-		for tile in s:
-			var neighbors_h = get_horizontal_neighbors(pixel_to_grid(tile.pos))
-			var neighbors_v = get_vertical_neighbors(pixel_to_grid(tile.pos))
-			
-			var is_center_h = false
-			var is_center_v = false
-			
-			if neighbors_h.size() >= 2:
-				is_center_h = true
-				var is_center = true
-				for n in neighbors_h:
-					if n.color != tile.color:
-						is_center = false
-						is_center_h = false
-					elif match_centers.has(n):
-						is_center = false
-				
-				if is_center && !match_centers.has(tile):
-					match_centers.append(tile)
-			
-			if neighbors_v.size() >= 2:
-				is_center_v = true
-				var is_center = true
-				for n in neighbors_v:
-					if n.color != tile.color:
-						is_center = false
-						is_center_v = false
-					elif match_centers.has(n):
-						is_center = false
-				
-				if is_center && !match_centers.has(tile):
-					match_centers.append(tile)
-			
-			if is_center_h && is_center_v:
-				if !match_centers.has(tile):
-					match_centers.append(tile)
-				for n in get_neighbors(pixel_to_grid(tile.pos), false):
-					if match_centers.has(n):
-						match_centers.erase(n)
-	
-	if match_centers.size() == 0:
-		return null
-	
-	return match_centers
-
 func find_matches():
 	var matched_pieces = []
 	
@@ -405,9 +328,54 @@ func find_matches():
 		elif horizontal_count >= 4:
 			bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.VERTICAL
 	
+	for p in matched_pieces:
+		var neighbors = get_neighbors(pixel_to_grid(p.pos), false)
+		for n in neighbors:
+			n._on_adjacent_match()
 	damage(matched_pieces)
 	get_parent().get_node("destroy_timer").start()
 	return true
+
+# This function was taken from source outlined at the top
+func match_at(column, row, type):
+	# this function checks if a match is created on initial generation of the board only
+	if column > 1:
+		if (all_pieces[column - 1][row].color == type && all_pieces[column - 2][row].color == type):
+			return true
+	if row > 1:
+		if (all_pieces[column][row - 1].color == type && all_pieces[column][row - 2].color == type):
+			return true
+	return false
+
+func damage(array):
+	for i in array:
+		if ! i.shielded:
+			i.take_damage(1)
+
+# This function was taken from source outlined at the top
+func destroy_matched():
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] != null:
+				if all_pieces[i][j].matched:
+					all_pieces[i][j].queue_free()
+	
+	spawn_bombs()
+	get_parent().get_node("collapse_timer").start()
+
+# This function was taken from source outlined at the top
+func collapse_columns():
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] == null:
+				for k in range(j + 1, height):
+					if all_pieces[i][k] != null && all_pieces[i][k].movable:
+						all_pieces[i][k].move(grid_to_pixel(i, j))
+						all_pieces[i][j] = all_pieces[i][k]
+						all_pieces[i][k] = null
+						break
+	
+	get_parent().get_node("refill_timer").start()
 
 func spawn_bombs():
 	if !use_bombs:
@@ -417,22 +385,21 @@ func spawn_bombs():
 		instantiate_bomb(t.pos, t.color, bomb_dict[t])
 	bomb_dict.clear()
 
-func paint_bomb(pos, color):
-	if p_bomb_limit <= 0:
-		return
-	
-	var neighbors = get_neighbors(pos, true)
-	for n in neighbors:
-		n.set_color(color, sprites[color])
-	all_pieces[pos.x][pos.y].set_color(color, sprites[color])
-	
-	p_bomb_used = true
-	p_bomb_limit -= 1
+func instantiate_bomb(pos, color, type):
+	var bomb = bomb_prefab.instantiate()
+	add_child(bomb)
+	var sprite_pos = color * 4 + type
+	bomb.set_attributes(color, bomb_sprites[sprite_pos], 1)
+	bomb.set_type(type)
+	bomb.set_position(pos)
+	bomb.move(pos)
+	var piece_pos = pixel_to_grid(pos)
+	if all_pieces[piece_pos.x][piece_pos.y] != null:
+		all_pieces[piece_pos.x][piece_pos.y].queue_free()
+	all_pieces[piece_pos.x][piece_pos.y] = bomb
 
-func damage(array):
-	for i in array:
-		if ! i.shielded:
-			i.take_damage(1)
+
+"""HELPER FUNCTIONS"""
 
 func is_null(array):
 	for i in array:
@@ -471,16 +438,90 @@ func is_in_grid(pos):
 			return true
 	return false
 
-# This function was taken from source outlined at the top
-func destroy_matched():
+"""GETTER FUNCTIONS"""
+
+func get_match_centers():
+	var shapes = get_connected_shapes()
+	
+	if shapes.size() == 0:
+		return null
+	
+	var match_centers = []
+	
+	for s in shapes:
+		for tile in s:
+			var neighbors_h = get_horizontal_neighbors(pixel_to_grid(tile.pos))
+			var neighbors_v = get_vertical_neighbors(pixel_to_grid(tile.pos))
+			
+			var is_center_h = false
+			var is_center_v = false
+			
+			if neighbors_h.size() >= 2:
+				is_center_h = true
+				var is_center = true
+				for n in neighbors_h:
+					if n.color != tile.color:
+						is_center = false
+						is_center_h = false
+					elif match_centers.has(n):
+						is_center = false
+				
+				if is_center && !match_centers.has(tile):
+					match_centers.append(tile)
+			
+			if neighbors_v.size() >= 2:
+				is_center_v = true
+				var is_center = true
+				for n in neighbors_v:
+					if n.color != tile.color:
+						is_center = false
+						is_center_v = false
+					elif match_centers.has(n):
+						is_center = false
+				
+				if is_center && !match_centers.has(tile):
+					match_centers.append(tile)
+			
+			if is_center_h && is_center_v:
+				if !match_centers.has(tile):
+					match_centers.append(tile)
+				for n in get_neighbors(pixel_to_grid(tile.pos), false):
+					if match_centers.has(n):
+						match_centers.erase(n)
+	
+	if match_centers.size() == 0:
+		return null
+	
+	return match_centers
+
+func get_connected_shapes():
+	var visited_pieces = []
+	var shapes_array = []
+	
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] != null:
-				if all_pieces[i][j].matched:
-					all_pieces[i][j].queue_free()
+			var piece = all_pieces[i][j]
+			if visited_pieces.has(piece) || piece.color == colors.NONE:
+				continue
+			var queue = []
+			var shape = []
+			queue.push_back(piece)
+			visited_pieces.append(piece)
+			
+			while !queue.is_empty():
+				var curr = queue.pop_front()
+				shape.append(curr)
+				var neighbors = get_neighbors(pixel_to_grid(curr.pos), false)
+				if neighbors != null:
+					for n in neighbors:
+						if n.color == curr.color && !visited_pieces.has(n):
+							queue.push_back(n)
+							visited_pieces.append(n)
+			
+			if shape.size() >= 3:
+				shapes_array.append(shape)
 	
-	spawn_bombs()
-	get_parent().get_node("collapse_timer").start()
+	return shapes_array
 
 func get_neighbors(pos, get_diagonal):
 	var neighbors = []
@@ -544,32 +585,7 @@ func get_vertical_neighbors(pos):
 	
 	return null
 
-# This function was taken from source outlined at the top
-func collapse_columns():
-	for i in width:
-		for j in height:
-			if all_pieces[i][j] == null:
-				for k in range(j + 1, height):
-					if all_pieces[i][k] != null && all_pieces[i][k].movable:
-						all_pieces[i][k].move(grid_to_pixel(i, j))
-						all_pieces[i][j] = all_pieces[i][k]
-						all_pieces[i][k] = null
-						break
-	
-	get_parent().get_node("refill_timer").start()
-
-func instantiate_bomb(pos, color, type):
-	var bomb = bomb_prefab.instantiate()
-	add_child(bomb)
-	var sprite_pos = color * 4 + type
-	bomb.set_attributes(color, bomb_sprites[sprite_pos], 1)
-	bomb.set_type(type)
-	bomb.set_position(pos)
-	bomb.move(pos)
-	var piece_pos = pixel_to_grid(pos)
-	if all_pieces[piece_pos.x][piece_pos.y] != null:
-		all_pieces[piece_pos.x][piece_pos.y].queue_free()
-	all_pieces[piece_pos.x][piece_pos.y] = bomb
+"""SIGNAL FUNCTIONS"""
 
 func _on_bomb_destroyed(position, type, color):
 	var pos = pixel_to_grid(position)

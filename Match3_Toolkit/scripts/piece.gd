@@ -13,7 +13,6 @@ enum colors {YELLOW, PINK, ORANGE, LIGHT_GREEN, GREEN, BLUE, NONE}
 
 var move_tween
 var matched = false
-var match_magnitude = 0
 var moved = false
 var blocked = false
 var shielded = false
@@ -46,10 +45,6 @@ func move(target):
 	pos = target
 	moved = true
 
-func set_match_magnitude(mag):
-	if mag > self.match_magnitude:
-		self.match_magnitude = mag
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
@@ -62,7 +57,6 @@ func take_damage(amount):
 	health -= amount
 	if health <= 0:
 		destroy()
-	match_magnitude = 0
 
 func shield():
 	shielded = true
@@ -78,6 +72,9 @@ func unblock():
 	blocked = false
 	var s = self.get_node("BlockSprite")
 	s.set_texture(null)
+
+func _on_adjacent_match():
+	pass
 
 func destroy():
 	dim()
