@@ -9,6 +9,9 @@ enum bomb_types {HORIZONTAL, VERTICAL, COLOR, RADIUS}
 
 var state
 
+# Control Type
+@export var use_collapse: bool
+
 # Grid Variables
 @export var width: int
 @export var height: int
@@ -103,6 +106,8 @@ func _input(event):
 		if state == states.MOVE && is_in_grid(pixel_to_grid(get_global_mouse_position())):
 			controlling = true
 			first_touch = get_global_mouse_position()
+			if use_collapse:
+				collapse_position(pixel_to_grid(first_touch))
 		else:
 			controlling = false
 	
@@ -110,7 +115,8 @@ func _input(event):
 		if state == states.MOVE && (is_in_grid(pixel_to_grid(get_global_mouse_position())) && controlling):
 			controlling = false
 			final_touch = get_global_mouse_position()
-			touch_difference(pixel_to_grid(first_touch), pixel_to_grid(final_touch))
+			if !use_collapse:
+				touch_difference(pixel_to_grid(first_touch), pixel_to_grid(final_touch))
 
 # This was originally adapted from the source above, but heavily changed
 func spawn_pieces():
@@ -182,6 +188,29 @@ func spawn_pieces():
 		
 		if use_p_bombs:
 			p_bomb_used = false
+
+func collapse_position(pos):
+	state = states.WAIT
+	
+	var piece = all_pieces[pos.x][pos.y]
+	var visited_pieces = []
+	var queue = []
+	var shape = []
+	queue.push_back(piece)
+	visited_pieces.append(piece)
+	
+	while !queue.is_empty():
+		var curr = queue.pop_front()
+		shape.append(curr)
+		var neighbors = get_neighbors(pixel_to_grid(curr.pos), false)
+		if neighbors != null:
+			for n in neighbors:
+				if n.color == curr.color && !visited_pieces.has(n):
+					queue.push_back(n)
+					visited_pieces.append(n)
+	
+	damage(shape)
+	get_parent().get_node("destroy_timer").start()
 
 # This function was taken from source outlined at the top
 func swap_pieces(loc, dir):
@@ -402,7 +431,8 @@ func paint_bomb(pos, color):
 
 func damage(array):
 	for i in array:
-		i.take_damage(1)
+		if ! i.shielded:
+			i.take_damage(1)
 
 func is_null(array):
 	for i in array:

@@ -16,8 +16,10 @@ var matched = false
 var match_magnitude = 0
 var moved = false
 var blocked = false
+var shielded = false
 var pos
 var block_sprite = preload("res://Match 3 Assets/Obstacles/Locks.png")
+var shield_sprite = preload("res://Match 3 Assets/Obstacles/Ice.png")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -61,6 +63,11 @@ func take_damage(amount):
 	if health <= 0:
 		destroy()
 	match_magnitude = 0
+
+func shield():
+	shielded = true
+	var s = self.get_node("ShieldSprite")
+	s.set_texture(shield_sprite)
 
 func block():
 	blocked = true
