@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwne72bdh1j17"]
+
+[ext_resource type="PackedScene" uid="uid://bqjh8mlm4bk2q" path="res://scenes/pieces/piece.tscn" id="1_met1f"]
+[ext_resource type="Script" path="res://scripts/growing_obstacle.gd" id="2_p6453"]
+[ext_resource type="Texture2D" uid="uid://dj7e3vroba7uv" path="res://Match 3 Assets/Obstacles/Slime.png" id="2_vtxej"]
+
+[node name="growing_obstacle" instance=ExtResource("1_met1f")]
+script = ExtResource("2_p6453")
+color = 6
+health = 1
+movable = false
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_vtxej")

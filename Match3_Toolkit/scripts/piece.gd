@@ -76,6 +76,9 @@ func unblock():
 func _on_adjacent_match():
 	pass
 
+func _on_turn_end():
+	pass
+
 func destroy():
 	dim()
 	matched = true

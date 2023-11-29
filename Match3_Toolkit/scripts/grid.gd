@@ -61,7 +61,9 @@ var bomb_sprites = [
 var piece_prefab = preload("res://scenes/pieces/piece.tscn")
 var bomb_prefab = preload("res://scenes/pieces/gadgets/bomb.tscn")
 var obstacle_prefab = preload("res://scenes/pieces/obstacles/obstacle.tscn")
+var grow_obstacle_prefab = preload("res://scenes/pieces/obstacles/growing_obstacle.tscn")
 var bomb_dict = {}
+var grow_obs_list = []
 class Tile_data:
 	var pos: Vector2
 	var color: colors
@@ -267,10 +269,8 @@ func spawn_pieces():
 				piece.move(grid_to_pixel(i, j))
 				all_pieces[i][j] = piece
 		
-		find_matches()
-		
-		if use_p_bombs:
-			p_bomb_used = false
+		if !find_matches():
+			turn_end()
 
 func find_matches():
 	var matched_pieces = []
@@ -278,7 +278,6 @@ func find_matches():
 	var match_centers = get_match_centers()
 	
 	if match_centers == null:
-		state = states.MOVE
 		return false
 	
 	for tile in match_centers:
@@ -347,6 +346,16 @@ func match_at(column, row, type):
 			return true
 	return false
 
+func turn_end():
+	state = states.MOVE
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] != null:
+				all_pieces[i][j]._on_turn_end()
+	
+	grow_obstacles()
+	grow_obs_list = []
+
 func damage(array):
 	for i in array:
 		if ! i.shielded:
@@ -385,6 +394,10 @@ func spawn_bombs():
 		instantiate_bomb(t.pos, t.color, bomb_dict[t])
 	bomb_dict.clear()
 
+func grow_obstacles():
+	for p in grow_obs_list:
+		instantiate_growing_obstacle(p)
+
 func instantiate_bomb(pos, color, type):
 	var bomb = bomb_prefab.instantiate()
 	add_child(bomb)
@@ -398,6 +411,15 @@ func instantiate_bomb(pos, color, type):
 		all_pieces[piece_pos.x][piece_pos.y].queue_free()
 	all_pieces[piece_pos.x][piece_pos.y] = bomb
 
+func instantiate_growing_obstacle(pos):
+	var obs = grow_obstacle_prefab.instantiate()
+	add_child(obs)
+	obs.set_position(pos)
+	obs.move(pos)
+	var piece_pos = pixel_to_grid(pos)
+	if all_pieces[piece_pos.x][piece_pos.y] != null:
+		all_pieces[piece_pos.x][piece_pos.y].queue_free()
+	all_pieces[piece_pos.x][piece_pos.y] = obs
 
 """HELPER FUNCTIONS"""
 
@@ -586,6 +608,21 @@ func get_vertical_neighbors(pos):
 	return null
 
 """SIGNAL FUNCTIONS"""
+
+func _on_grow_obstacle(pos):
+	var neighbors = get_neighbors(pixel_to_grid(pos), false)
+	if neighbors == null:
+		return
+	neighbors.shuffle()
+	var to_replace
+	# This is stupid, but godot wont let me do neighbors[0]
+	for n in neighbors:
+		if n.color == colors.NONE:
+			return
+		to_replace = n
+		break
+	
+	grow_obs_list.append(to_replace.pos)
 
 func _on_bomb_destroyed(position, type, color):
 	var pos = pixel_to_grid(position)
