@@ -273,59 +273,46 @@ func spawn_pieces():
 			turn_end()
 
 func find_matches():
+	var matches = get_shapes()
+	if matches == null:
+		return false
+	var horizontal_matches = matches.horizontal
+	var vertical_matches = matches.vertical
 	var matched_pieces = []
 	
-	var match_centers = get_match_centers()
-	
-	if match_centers == null:
-		return false
-	
-	for tile in match_centers:
-		matched_pieces.append(tile)
+	for m in horizontal_matches:
+		var is_radius_bomb = false
+		for p in m:
+			if !matched_pieces.has(p):
+				matched_pieces.append(p)
+			if p.hor_matched && p.ver_matched:
+				is_radius_bomb = determine_radius_bomb(p)
 		
-		var horizontal_match = []
-		var vertical_match = []
+		if is_radius_bomb:
+			continue
 		
-		var queue = []
-		queue.push_back(tile)
-		
-		while !queue.is_empty():
-			var t = queue.pop_front()
-			if t.color == tile.color:
-				if t != tile:
-					horizontal_match.append(t)
-				for n in get_horizontal_neighbors(pixel_to_grid(t.pos)):
-					if !horizontal_match.has(n) && n != tile:
-						queue.push_back(n)
-		
-		queue = []
-		queue.push_back(tile)
-		
-		while !queue.is_empty():
-			var t = queue.pop_front()
-			if t.color == tile.color:
-				if t != tile:
-					vertical_match.append(t)
-				for n in get_vertical_neighbors(pixel_to_grid(t.pos)):
-					if !vertical_match.has(n) && n != tile:
-						queue.push_back(n)
-		
-		var horizontal_count = horizontal_match.size() + 1 # adding 1 because center is not in list
-		var vertical_count = vertical_match.size() + 1
-		
-		if horizontal_count >= 3:
-			matched_pieces.append_array(horizontal_match)
-		if vertical_count >= 3:
-			matched_pieces.append_array(vertical_match)
-		
-		if horizontal_count >= 5 || vertical_count >= 5:
+		var tile = m[m.size()/2]
+		if m.size() >= 5:
 			bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.COLOR
-		elif horizontal_count >= 3 && vertical_count >= 3:
-			bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.RADIUS
-		elif vertical_count >= 4:
-			bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.HORIZONTAL
-		elif horizontal_count >= 4:
+		elif m.size() >= 4:
 			bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.VERTICAL
+	
+	for m in vertical_matches:
+		var is_radius_bomb = false
+		for p in m:
+			if !matched_pieces.has(p):
+				matched_pieces.append(p)
+			if p.hor_matched && p.ver_matched:
+				is_radius_bomb = determine_radius_bomb(p)
+		
+		if is_radius_bomb:
+			continue
+		
+		var tile = m[m.size()/2]
+		if m.size() >= 5:
+			bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.COLOR
+		elif m.size() >= 4:
+			bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.HORIZONTAL
 	
 	for p in matched_pieces:
 		var neighbors = get_neighbors(pixel_to_grid(p.pos), false)
@@ -398,6 +385,45 @@ func grow_obstacles():
 	for p in grow_obs_list:
 		instantiate_growing_obstacle(p)
 
+func determine_radius_bomb(piece):
+	var horizontal_match = []
+	var vertical_match = []
+	
+	var queue = []
+	queue.push_back(piece)
+	
+	while !queue.is_empty():
+		var t = queue.pop_front()
+		if t.color == piece.color:
+			if t != piece:
+				horizontal_match.append(t)
+			for n in get_horizontal_neighbors(pixel_to_grid(t.pos)):
+				if !horizontal_match.has(n) && n != piece:
+					queue.push_back(n)
+	
+	queue = []
+	queue.push_back(piece)
+	
+	while !queue.is_empty():
+		var t = queue.pop_front()
+		if t.color == piece.color:
+			if t != piece:
+				vertical_match.append(t)
+			for n in get_vertical_neighbors(pixel_to_grid(t.pos)):
+				if !vertical_match.has(n) && n != piece:
+					queue.push_back(n)
+	
+	var horizontal_count = horizontal_match.size() + 1 # adding 1 because center is not in list
+	var vertical_count = vertical_match.size() + 1
+	
+	if horizontal_count >= 5:
+		return false
+	if vertical_count >= 5:
+		return false
+	
+	bomb_dict[Tile_data.new(piece.pos, piece.color)] = bomb_types.RADIUS
+	return true
+
 func instantiate_bomb(pos, color, type):
 	var bomb = bomb_prefab.instantiate()
 	add_child(bomb)
@@ -462,88 +488,64 @@ func is_in_grid(pos):
 
 """GETTER FUNCTIONS"""
 
-func get_match_centers():
-	var shapes = get_connected_shapes()
-	
-	if shapes.size() == 0:
-		return null
-	
-	var match_centers = []
-	
-	for s in shapes:
-		for tile in s:
-			var neighbors_h = get_horizontal_neighbors(pixel_to_grid(tile.pos))
-			var neighbors_v = get_vertical_neighbors(pixel_to_grid(tile.pos))
-			
-			var is_center_h = false
-			var is_center_v = false
-			
-			if neighbors_h.size() >= 2:
-				is_center_h = true
-				var is_center = true
-				for n in neighbors_h:
-					if n.color != tile.color:
-						is_center = false
-						is_center_h = false
-					elif match_centers.has(n):
-						is_center = false
-				
-				if is_center && !match_centers.has(tile):
-					match_centers.append(tile)
-			
-			if neighbors_v.size() >= 2:
-				is_center_v = true
-				var is_center = true
-				for n in neighbors_v:
-					if n.color != tile.color:
-						is_center = false
-						is_center_v = false
-					elif match_centers.has(n):
-						is_center = false
-				
-				if is_center && !match_centers.has(tile):
-					match_centers.append(tile)
-			
-			if is_center_h && is_center_v:
-				if !match_centers.has(tile):
-					match_centers.append(tile)
-				for n in get_neighbors(pixel_to_grid(tile.pos), false):
-					if match_centers.has(n):
-						match_centers.erase(n)
-	
-	if match_centers.size() == 0:
-		return null
-	
-	return match_centers
-
-func get_connected_shapes():
-	var visited_pieces = []
-	var shapes_array = []
+func get_shapes():
+	var checked_pieces = []
+	var horizontal_matches = []
+	var vertical_matches = []
 	
 	for i in width:
 		for j in height:
 			var piece = all_pieces[i][j]
-			if visited_pieces.has(piece) || piece.color == colors.NONE:
+			if checked_pieces.has(piece) || piece.color == colors.NONE:
 				continue
 			var queue = []
 			var shape = []
+			var visited = []
 			queue.push_back(piece)
-			visited_pieces.append(piece)
+			visited.append(piece)
 			
 			while !queue.is_empty():
 				var curr = queue.pop_front()
 				shape.append(curr)
-				var neighbors = get_neighbors(pixel_to_grid(curr.pos), false)
+				var neighbors = get_horizontal_neighbors(pixel_to_grid(curr.pos))
 				if neighbors != null:
 					for n in neighbors:
-						if n.color == curr.color && !visited_pieces.has(n):
+						if n.color == curr.color && !visited.has(n):
 							queue.push_back(n)
-							visited_pieces.append(n)
+							visited.append(n)
 			
 			if shape.size() >= 3:
-				shapes_array.append(shape)
+				horizontal_matches.append(shape)
+				for p in shape:
+					p.hor_matched = true
+					if !checked_pieces.has(p):
+						checked_pieces.append(p)
+			
+			shape = []
+			visited = []
+			queue.push_back(piece)
+			visited.append(piece)
+			
+			while !queue.is_empty():
+				var curr = queue.pop_front()
+				shape.append(curr)
+				var neighbors = get_vertical_neighbors(pixel_to_grid(curr.pos))
+				if neighbors != null:
+					for n in neighbors:
+						if n.color == curr.color && !visited.has(n):
+							queue.push_back(n)
+							visited.append(n)
+			
+			if shape.size() >= 3:
+				vertical_matches.append(shape)
+				for p in shape:
+					p.ver_matched = true
+					if !checked_pieces.has(p):
+						checked_pieces.append(p)
+	if horizontal_matches.is_empty() && vertical_matches.is_empty():
+		return null
 	
-	return shapes_array
+	return {"horizontal":horizontal_matches, "vertical":vertical_matches}
 
 func get_neighbors(pos, get_diagonal):
 	var neighbors = []

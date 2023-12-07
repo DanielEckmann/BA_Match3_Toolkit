@@ -16,6 +16,9 @@ var matched = false
 var moved = false
 var blocked = false
 var shielded = false
+var hor_matched = false
+var ver_matched = false
+
 var pos
 var block_sprite = preload("res://Match 3 Assets/Obstacles/Locks.png")
 var shield_sprite = preload("res://Match 3 Assets/Obstacles/Ice.png")
@@ -55,6 +58,8 @@ func take_damage(amount):
 		return
 	
 	health -= amount
+	hor_matched = false
+	ver_matched = false
 	if health <= 0:
 		destroy()
 
