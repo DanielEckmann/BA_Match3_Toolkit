@@ -194,7 +194,7 @@ func paint_bomb(pos, color):
 	if p_bomb_limit <= 0:
 		return
 	
-	var neighbors = get_neighbors(pos, true)
+	var neighbors = get_neighbors(pos, false)
 	for n in neighbors:
 		n.set_color(color, sprites[color])
 	all_pieces[pos.x][pos.y].set_color(color, sprites[color])
