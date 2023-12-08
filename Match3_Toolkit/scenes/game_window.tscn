@@ -34,6 +34,7 @@ y_offset = 2
 use_bombs = true
 use_p_bombs = true
 p_bomb_limit = 3
+color_count = 6
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5

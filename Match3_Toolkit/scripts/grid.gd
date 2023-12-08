@@ -21,6 +21,7 @@ var state
 @export var use_bombs: bool
 @export var use_p_bombs: bool
 @export var p_bomb_limit: int
+@export var color_count: int
 
 var sprites = [
 	preload("res://Match 3 Assets/Pieces/Yellow Piece.png"),
@@ -207,7 +208,7 @@ func paint_bomb(pos, color):
 func spawn_pieces():
 	if game_start:
 		var type_arr = []
-		for k in range (0, colors.size() - 1):
+		for k in range (0, color_count):
 			type_arr.append(k)
 		
 		for o in obstacles:
@@ -245,7 +246,7 @@ func spawn_pieces():
 				all_pieces[i][j].moved = false
 	else:
 		var type_arr = []
-		for k in range (0, colors.size() - 1):
+		for k in range (0, color_count):
 			type_arr.append(k)
 		
 		var spawned_pieces = []
@@ -335,6 +336,7 @@ func match_at(column, row, type):
 
 func turn_end():
 	state = states.MOVE
+	p_bomb_used = false
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
@@ -425,6 +427,10 @@ func determine_radius_bomb(piece):
 	return true
 
 func instantiate_bomb(pos, color, type):
+	var piece_pos = pixel_to_grid(pos)
+	if all_pieces[piece_pos.x][piece_pos.y] != null:
+		if all_pieces[piece_pos.x][piece_pos.y].is_in_group("bomb"):
+			return
 	var bomb = bomb_prefab.instantiate()
 	add_child(bomb)
 	var sprite_pos = color * 4 + type
@@ -432,7 +438,6 @@ func instantiate_bomb(pos, color, type):
 	bomb.set_type(type)
 	bomb.set_position(pos)
 	bomb.move(pos)
-	var piece_pos = pixel_to_grid(pos)
 	if all_pieces[piece_pos.x][piece_pos.y] != null:
 		all_pieces[piece_pos.x][piece_pos.y].queue_free()
 	all_pieces[piece_pos.x][piece_pos.y] = bomb
