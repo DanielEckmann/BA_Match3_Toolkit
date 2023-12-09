@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bu2asn0r1ys43"]
+[gd_scene load_steps=8 format=3 uid="uid://bu2asn0r1ys43"]
 
 [ext_resource type="Texture2D" uid="uid://d4mqvultcx3h6" path="res://Match 3 Assets/UI/Backgrounds/background 2.png" id="1_tuor0"]
 [ext_resource type="Texture2D" uid="uid://c8sxfx358r6tm" path="res://Match 3 Assets/UI/Top UI v 2.png" id="2_2k40v"]
 [ext_resource type="Texture2D" uid="uid://uqqjlwogfame" path="res://Match 3 Assets/UI/Bottom UI v 2.png" id="3_ugvqe"]
+[ext_resource type="Script" path="res://scripts/Timer.gd" id="3_w8vw5"]
+[ext_resource type="Script" path="res://scripts/Score.gd" id="4_gr5cu"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="4_m8tuw"]
 [ext_resource type="Script" path="res://scripts/GoalCounter.gd" id="5_w6cps"]
 
@@ -17,6 +19,39 @@ texture = ExtResource("1_tuor0")
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("2_2k40v")
+
+[node name="Timer" type="Panel" parent="top_ui"]
+layout_mode = 0
+offset_left = 223.0
+offset_top = 27.0
+offset_right = 354.0
+offset_bottom = 126.0
+script = ExtResource("3_w8vw5")
+
+[node name="TimerLabel" type="Label" parent="top_ui/Timer"]
+layout_mode = 0
+offset_left = 4.0
+offset_right = 129.0
+offset_bottom = 99.0
+text = "000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score" type="Panel" parent="top_ui"]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 30.0
+offset_right = 169.0
+offset_bottom = 70.0
+script = ExtResource("4_gr5cu")
+
+[node name="ScoreLabel" type="Label" parent="top_ui/Score"]
+layout_mode = 0
+offset_right = 149.0
+offset_bottom = 40.0
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="bottom_ui" type="TextureRect" parent="."]
 offset_top = 928.0
@@ -37,10 +72,6 @@ p_bomb_limit = 3
 color_count = 6
 obstacles = PackedVector2Array(2, 5, 3, 5, 4, 5, 5, 5)
 blocked_elements = PackedVector2Array(3, 3, 4, 3)
-movable_obstacles = PackedVector2Array(3, 7, 4, 7)
-removable_obstacles = PackedVector2Array(0, 3, 7, 3)
-growing_obstacles = PackedVector2Array(0, 9, 7, 9)
-shielded_pieces = PackedVector2Array(3, 0, 4, 0)
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -57,6 +88,7 @@ one_shot = true
 [node name="GoalCounter" type="Node2D" parent="."]
 script = ExtResource("5_w6cps")
 
+[connection signal="score_update" from="grid" to="top_ui/Score" method="_on_grid_score_update"]
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 [connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
 [connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]

@@ -18,6 +18,7 @@ var blocked = false
 var shielded = false
 var hor_matched = false
 var ver_matched = false
+var value = 1
 
 var pos
 var block_sprite = preload("res://Match 3 Assets/Obstacles/Locks.png")

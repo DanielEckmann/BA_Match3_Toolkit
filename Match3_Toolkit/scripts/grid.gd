@@ -9,6 +9,8 @@ enum bomb_types {HORIZONTAL, VERTICAL, COLOR, RADIUS}
 
 var state
 
+signal score_update(value)
+
 # Control Type
 @export var use_collapse: bool
 
@@ -401,6 +403,7 @@ func destroy_matched():
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
+					emit_signal("score_update", all_pieces[i][j].value)
 					all_pieces[i][j].queue_free()
 	
 	spawn_bombs()
