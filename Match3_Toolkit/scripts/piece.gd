@@ -70,11 +70,13 @@ func shield():
 
 func block():
 	blocked = true
+	movable = false
 	var s = self.get_node("BlockSprite")
 	s.set_texture(block_sprite)
 
 func unblock():
 	blocked = false
+	movable = true
 	var s = self.get_node("BlockSprite")
 	s.set_texture(null)
 

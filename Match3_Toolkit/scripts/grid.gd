@@ -21,7 +21,14 @@ var state
 @export var use_bombs: bool
 @export var use_p_bombs: bool
 @export var p_bomb_limit: int
+@export var no_refill: bool
 @export var color_count: int
+@export var obstacles: PackedVector2Array
+@export var blocked_elements: PackedVector2Array
+@export var movable_obstacles: PackedVector2Array
+@export var removable_obstacles: PackedVector2Array
+@export var growing_obstacles: PackedVector2Array
+@export var shielded_pieces: PackedVector2Array
 
 var sprites = [
 	preload("res://Match 3 Assets/Pieces/Yellow Piece.png"),
@@ -63,6 +70,8 @@ var piece_prefab = preload("res://scenes/pieces/piece.tscn")
 var bomb_prefab = preload("res://scenes/pieces/gadgets/bomb.tscn")
 var obstacle_prefab = preload("res://scenes/pieces/obstacles/obstacle.tscn")
 var grow_obstacle_prefab = preload("res://scenes/pieces/obstacles/growing_obstacle.tscn")
+var move_obstacle_prefab = preload("res://scenes/pieces/obstacles/movable_obstacle.tscn")
+var remove_obstacle_prefab = preload("res://scenes/pieces/obstacles/removable_obstacle.tscn")
 var bomb_dict = {}
 var grow_obs_list = []
 class Tile_data:
@@ -75,8 +84,6 @@ class Tile_data:
 
 
 var all_pieces = []
-
-var obstacles: PackedVector2Array = [Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5)]
 
 var game_start = true
 var p_bomb_used = false
@@ -128,6 +135,12 @@ func collapse_position(pos):
 	state = states.WAIT
 	
 	var piece = all_pieces[pos.x][pos.y]
+	if piece == null:
+		state = states.MOVE
+		return
+	if !piece.movable || piece.color == colors.NONE:
+		state = states.MOVE
+		return
 	var visited_pieces = []
 	var queue = []
 	var shape = []
@@ -144,6 +157,11 @@ func collapse_position(pos):
 					queue.push_back(n)
 					visited_pieces.append(n)
 	
+	for p in shape:
+		var neighbors = get_neighbors(pixel_to_grid(p.pos), false)
+		if neighbors != null:
+			for n in neighbors:
+				n._on_adjacent_match()
 	damage(shape)
 	get_parent().get_node("destroy_timer").start()
 
@@ -218,6 +236,27 @@ func spawn_pieces():
 			obstacle.move(grid_to_pixel(o.x, o.y))
 			all_pieces[o.x][o.y] = obstacle
 		
+		for o in movable_obstacles:
+			var obstacle = move_obstacle_prefab.instantiate()
+			add_child(obstacle)
+			obstacle.set_position(grid_to_pixel(o.x, o.y + y_offset))
+			obstacle.move(grid_to_pixel(o.x, o.y))
+			all_pieces[o.x][o.y] = obstacle
+		
+		for o in removable_obstacles:
+			var obstacle = remove_obstacle_prefab.instantiate()
+			add_child(obstacle)
+			obstacle.set_position(grid_to_pixel(o.x, o.y + y_offset))
+			obstacle.move(grid_to_pixel(o.x, o.y))
+			all_pieces[o.x][o.y] = obstacle
+		
+		for o in growing_obstacles:
+			var obstacle = grow_obstacle_prefab.instantiate()
+			add_child(obstacle)
+			obstacle.set_position(grid_to_pixel(o.x, o.y + y_offset))
+			obstacle.move(grid_to_pixel(o.x, o.y))
+			all_pieces[o.x][o.y] = obstacle
+		
 		for i in width:
 			for j in height:
 				if all_pieces[i][j] != null:
@@ -244,6 +283,12 @@ func spawn_pieces():
 		for i in width:
 			for j in height:
 				all_pieces[i][j].moved = false
+		
+		for b in blocked_elements:
+			all_pieces[b.x][b.y].block()
+		
+		for b in shielded_pieces:
+			all_pieces[b.x][b.y].shield()
 	else:
 		var type_arr = []
 		for k in range (0, color_count):
@@ -373,6 +418,10 @@ func collapse_columns():
 						all_pieces[i][k] = null
 						break
 	
+	if no_refill:
+		if !find_matches():
+			turn_end()
+		return
 	get_parent().get_node("refill_timer").start()
 
 func spawn_bombs():
@@ -384,8 +433,13 @@ func spawn_bombs():
 	bomb_dict.clear()
 
 func grow_obstacles():
-	for p in grow_obs_list:
-		instantiate_growing_obstacle(p)
+	#for p in grow_obs_list:
+		#instantiate_growing_obstacle(p)
+	if grow_obs_list.is_empty():
+		return
+	grow_obs_list.shuffle()
+	var o = grow_obs_list[0]
+	instantiate_growing_obstacle(o)
 
 func determine_radius_bomb(piece):
 	var horizontal_match = []
@@ -501,6 +555,8 @@ func get_shapes():
 	for i in width:
 		for j in height:
 			var piece = all_pieces[i][j]
+			if all_pieces[i][j] == null:
+				continue
 			if checked_pieces.has(piece) || piece.color == colors.NONE:
 				continue
 			var queue = []
