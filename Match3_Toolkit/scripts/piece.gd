@@ -85,7 +85,8 @@ func _on_adjacent_match():
 	pass
 
 func _on_turn_end():
-	pass
+	hor_matched = false
+	ver_matched = false
 
 func destroy():
 	dim()

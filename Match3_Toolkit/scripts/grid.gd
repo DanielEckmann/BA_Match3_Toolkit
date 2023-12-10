@@ -9,8 +9,9 @@ enum bomb_types {HORIZONTAL, VERTICAL, COLOR, RADIUS}
 
 var state
 
-signal score_update(value)
+signal score_update(value, color)
 signal game_over()
+signal grid_empty()
 
 # Control Type
 @export var use_collapse: bool
@@ -385,13 +386,18 @@ func match_at(column, row, type):
 func turn_end():
 	state = states.MOVE
 	p_bomb_used = false
+	var grid_empty = true
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
 				all_pieces[i][j]._on_turn_end()
+				grid_empty = false
 	
 	grow_obstacles()
 	grow_obs_list = []
+	
+	if grid_empty:
+		emit_signal("grid_empty")
 
 func damage(array):
 	for i in array:
@@ -404,7 +410,7 @@ func destroy_matched():
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
-					emit_signal("score_update", all_pieces[i][j].value)
+					emit_signal("score_update", all_pieces[i][j].value, all_pieces[i][j].color)
 					all_pieces[i][j].queue_free()
 	
 	spawn_bombs()
@@ -509,6 +515,11 @@ func instantiate_growing_obstacle(pos):
 	if all_pieces[piece_pos.x][piece_pos.y] != null:
 		all_pieces[piece_pos.x][piece_pos.y].queue_free()
 	all_pieces[piece_pos.x][piece_pos.y] = obs
+
+func end_game():
+	state = states.GAME_OVER
+	emit_signal("game_over")
+	Engine.time_scale = 0.0
 
 func reset_game():
 	state = states.WAIT
@@ -740,10 +751,10 @@ func _on_refill_timer_timeout():
 	spawn_pieces()
 
 func _on_gameover_timer_timeout():
-	state = states.GAME_OVER
-	emit_signal("game_over")
-	Engine.time_scale = 0.0
-
+	end_game()
 
 func _on_reset_button_pressed():
 	reset_game()
+
+func _on_goal_counter_end_game():
+	end_game()

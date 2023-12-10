@@ -88,11 +88,12 @@ one_shot = true
 
 [node name="GoalCounter" type="Node2D" parent="."]
 script = ExtResource("5_w6cps")
+piece_to_clear = 5
+needed_piece_count = 10
 
 [node name="gameover_timer" type="Timer" parent="."]
 wait_time = 120.0
 one_shot = true
-autostart = true
 
 [node name="GameOverScreen" type="Panel" parent="."]
 offset_left = 132.0
@@ -118,12 +119,16 @@ offset_bottom = 146.0
 text = "Restart"
 
 [connection signal="game_over" from="grid" to="GameOverScreen" method="_on_grid_game_over"]
+[connection signal="grid_empty" from="grid" to="GoalCounter" method="_on_grid_grid_empty"]
 [connection signal="score_update" from="grid" to="top_ui/Score" method="_on_grid_score_update"]
+[connection signal="score_update" from="grid" to="GoalCounter" method="_on_grid_score_update"]
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 [connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
 [connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
+[connection signal="end_game" from="GoalCounter" to="grid" method="_on_goal_counter_end_game"]
 [connection signal="timeout" from="gameover_timer" to="grid" method="_on_gameover_timer_timeout"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/Timer" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/Score" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="grid" method="_on_reset_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/ResetButton" to="GoalCounter" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="GameOverScreen" method="_on_reset_button_pressed"]
