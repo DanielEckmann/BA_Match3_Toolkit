@@ -1,15 +1,16 @@
 extends Node2D
 
-# A lot of code taken from https://www.youtube.com/watch?v=YhykrMFHOV4&list=PL4vbr3u7UKWqwQlvwvgNcgDL1p_3hcNn2
+# Some of the code taken from https://www.youtube.com/watch?v=YhykrMFHOV4&list=PL4vbr3u7UKWqwQlvwvgNcgDL1p_3hcNn2
 # however most of it heavily changed. Where code was taken as-is, it is marked by a comment
 
-enum states {WAIT, MOVE}
+enum states {WAIT, MOVE, GAME_OVER}
 enum colors {YELLOW, PINK, ORANGE, LIGHT_GREEN, GREEN, BLUE, NONE}
 enum bomb_types {HORIZONTAL, VERTICAL, COLOR, RADIUS}
 
 var state
 
 signal score_update(value)
+signal game_over()
 
 # Control Type
 @export var use_collapse: bool
@@ -509,6 +510,25 @@ func instantiate_growing_obstacle(pos):
 		all_pieces[piece_pos.x][piece_pos.y].queue_free()
 	all_pieces[piece_pos.x][piece_pos.y] = obs
 
+func reset_game():
+	state = states.WAIT
+	p_bomb_used = false
+	controlling = false
+	Engine.time_scale = 1.0
+	for n in get_children():
+		remove_child(n)
+		n.queue_free()
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] != null:
+				all_pieces[i][j].queue_free()
+	game_start = true
+	all_pieces = make_2d_array()
+	spawn_pieces()
+	game_start = false
+	state = states.MOVE
+	get_parent().get_node("gameover_timer").start()
+
 """HELPER FUNCTIONS"""
 
 func is_null(array):
@@ -718,3 +738,12 @@ func _on_collapse_timer_timeout():
 
 func _on_refill_timer_timeout():
 	spawn_pieces()
+
+func _on_gameover_timer_timeout():
+	state = states.GAME_OVER
+	emit_signal("game_over")
+	Engine.time_scale = 0.0
+
+
+func _on_reset_button_pressed():
+	reset_game()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bu2asn0r1ys43"]
+[gd_scene load_steps=9 format=3 uid="uid://bu2asn0r1ys43"]
 
 [ext_resource type="Texture2D" uid="uid://d4mqvultcx3h6" path="res://Match 3 Assets/UI/Backgrounds/background 2.png" id="1_tuor0"]
 [ext_resource type="Texture2D" uid="uid://c8sxfx358r6tm" path="res://Match 3 Assets/UI/Top UI v 2.png" id="2_2k40v"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/Score.gd" id="4_gr5cu"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="4_m8tuw"]
 [ext_resource type="Script" path="res://scripts/GoalCounter.gd" id="5_w6cps"]
+[ext_resource type="Script" path="res://scripts/GameOverScreen.gd" id="8_ddpft"]
 
 [node name="game_window" type="Node2D"]
 
@@ -88,7 +89,41 @@ one_shot = true
 [node name="GoalCounter" type="Node2D" parent="."]
 script = ExtResource("5_w6cps")
 
+[node name="gameover_timer" type="Timer" parent="."]
+wait_time = 120.0
+one_shot = true
+autostart = true
+
+[node name="GameOverScreen" type="Panel" parent="."]
+offset_left = 132.0
+offset_top = 364.0
+offset_right = 441.0
+offset_bottom = 589.0
+script = ExtResource("8_ddpft")
+
+[node name="Label" type="Label" parent="GameOverScreen"]
+layout_mode = 0
+offset_right = 310.0
+offset_bottom = 99.0
+text = "Game Over!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResetButton" type="Button" parent="GameOverScreen"]
+layout_mode = 0
+offset_left = 81.0
+offset_top = 103.0
+offset_right = 232.0
+offset_bottom = 146.0
+text = "Restart"
+
+[connection signal="game_over" from="grid" to="GameOverScreen" method="_on_grid_game_over"]
 [connection signal="score_update" from="grid" to="top_ui/Score" method="_on_grid_score_update"]
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 [connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
 [connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
+[connection signal="timeout" from="gameover_timer" to="grid" method="_on_gameover_timer_timeout"]
+[connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/Timer" method="_on_reset_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/Score" method="_on_reset_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/ResetButton" to="grid" method="_on_reset_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/ResetButton" to="GameOverScreen" method="_on_reset_button_pressed"]

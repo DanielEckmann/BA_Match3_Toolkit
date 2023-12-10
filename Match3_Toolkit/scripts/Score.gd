@@ -8,3 +8,7 @@ func _process(delta):
 
 func _on_grid_score_update(value):
 	score += value
+
+
+func _on_reset_button_pressed():
+	score = 0

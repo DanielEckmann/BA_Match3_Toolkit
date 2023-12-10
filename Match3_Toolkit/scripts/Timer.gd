@@ -8,3 +8,8 @@ func _process(delta):
 	time += delta
 	seconds = fmod(time, 60)
 	$TimerLabel.text = "%02d" % seconds
+
+
+func _on_reset_button_pressed():
+	time = 0.0
+	seconds = 0
