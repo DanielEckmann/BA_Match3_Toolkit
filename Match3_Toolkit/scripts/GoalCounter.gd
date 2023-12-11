@@ -30,6 +30,9 @@ func _on_obstacle_destroyed():
 	if goal == goals.RES_CLEAR && piece_to_clear == clearable_pieces.OBSTACLE:
 		goal_pieces_destroyed += 1
 
+func _on_timebomb_destroyed():
+	emit_signal("end_game")
+
 func _on_grid_grid_empty():
 	if goal == goals.CLEAR:
 		emit_signal("end_game")

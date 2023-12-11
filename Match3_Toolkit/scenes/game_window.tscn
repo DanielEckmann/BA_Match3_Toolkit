@@ -73,6 +73,7 @@ p_bomb_limit = 3
 color_count = 6
 obstacles = PackedVector2Array(2, 5, 3, 5, 4, 5, 5, 5)
 blocked_elements = PackedVector2Array(3, 3, 4, 3)
+time_bombs = PackedVector2Array(7, 7)
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5

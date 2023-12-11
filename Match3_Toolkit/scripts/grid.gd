@@ -33,6 +33,7 @@ signal grid_empty()
 @export var removable_obstacles: PackedVector2Array
 @export var growing_obstacles: PackedVector2Array
 @export var shielded_pieces: PackedVector2Array
+@export var time_bombs: PackedVector2Array
 
 var sprites = [
 	preload("res://Match 3 Assets/Pieces/Yellow Piece.png"),
@@ -76,6 +77,7 @@ var obstacle_prefab = preload("res://scenes/pieces/obstacles/obstacle.tscn")
 var grow_obstacle_prefab = preload("res://scenes/pieces/obstacles/growing_obstacle.tscn")
 var move_obstacle_prefab = preload("res://scenes/pieces/obstacles/movable_obstacle.tscn")
 var remove_obstacle_prefab = preload("res://scenes/pieces/obstacles/removable_obstacle.tscn")
+var timebomb_prefab = preload("res://scenes/pieces/obstacles/time_bomb.tscn")
 var bomb_dict = {}
 var grow_obs_list = []
 class Tile_data:
@@ -260,6 +262,17 @@ func spawn_pieces():
 			obstacle.set_position(grid_to_pixel(o.x, o.y + y_offset))
 			obstacle.move(grid_to_pixel(o.x, o.y))
 			all_pieces[o.x][o.y] = obstacle
+		
+		for b in time_bombs:
+			randomize()
+			type_arr.shuffle()
+			var type = type_arr[0]
+			var bomb = timebomb_prefab.instantiate()
+			add_child(bomb)
+			bomb.set_attributes(type, sprites[type], 1)
+			bomb.set_position(grid_to_pixel(b.x, b.y + y_offset))
+			bomb.move(grid_to_pixel(b.x, b.y))
+			all_pieces[b.x][b.y] = bomb
 		
 		for i in width:
 			for j in height:
