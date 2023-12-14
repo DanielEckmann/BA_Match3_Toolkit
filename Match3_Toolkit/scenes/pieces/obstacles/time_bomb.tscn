@@ -5,6 +5,7 @@
 
 [node name="time_bomb" instance=ExtResource("1_ogiye")]
 script = ExtResource("2_td647")
+turns_left = 5
 health = 1
 
 [node name="timerlabel" type="Label" parent="." index="3"]

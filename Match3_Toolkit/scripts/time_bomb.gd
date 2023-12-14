@@ -2,7 +2,7 @@ extends Piece
 
 signal time_bomb_destroyed()
 
-var turns_left = 3
+@export var turns_left: int
 
 func _ready():
 	self.time_bomb_destroyed.connect(get_node("/root/game_window/GoalCounter")._on_timebomb_destroyed)
