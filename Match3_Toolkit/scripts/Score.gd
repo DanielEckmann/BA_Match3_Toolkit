@@ -9,6 +9,8 @@ func _process(delta):
 func _on_grid_score_update(value, color):
 	score += value
 
+func get_score():
+	return score
 
 func _on_reset_button_pressed():
 	score = 0

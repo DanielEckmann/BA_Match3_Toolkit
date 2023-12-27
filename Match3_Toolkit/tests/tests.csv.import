@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://c8m0dgbn2bf6f"
+
+[deps]
+
+files=["res://tests/tests.Mean time between moves.translation", "res://tests/tests.Total moves.translation", "res://tests/tests.Score.translation", "res://tests/tests.Goal type.translation", "res://tests/tests.Successful.translation"]
+
+source_file="res://tests/tests.csv"
+dest_files=["res://tests/tests.Mean time between moves.translation", "res://tests/tests.Total moves.translation", "res://tests/tests.Score.translation", "res://tests/tests.Goal type.translation", "res://tests/tests.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0

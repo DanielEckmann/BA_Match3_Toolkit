@@ -89,6 +89,13 @@ class Tile_data:
 		color = c
 
 
+var total_time = 0.0
+var time_between_turns = []
+var curr_turn_time = 0.0
+var total_moves = 0
+var successful = false
+var curr_goal = "score"
+
 var all_pieces = []
 
 var game_start = true
@@ -111,7 +118,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	total_time += delta
+	curr_turn_time += delta
 
 # This function was taken from source outlined at the top
 func _input(event):
@@ -409,6 +417,10 @@ func turn_end():
 	grow_obstacles()
 	grow_obs_list = []
 	
+	total_moves += 1
+	time_between_turns.append(curr_turn_time)
+	curr_turn_time = 0.0
+	
 	if grid_empty:
 		emit_signal("grid_empty")
 
@@ -533,11 +545,23 @@ func end_game():
 	state = states.GAME_OVER
 	emit_signal("game_over")
 	Engine.time_scale = 0.0
+	
+	var score = $"../top_ui/Score".get_score()
+	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
+	var f = FileAccess.open("./tests/tests.csv", FileAccess.READ_WRITE)
+	f.seek_end(0)
+	f.store_csv_line(csv_line)
+	f.close()
 
 func reset_game():
 	state = states.WAIT
 	p_bomb_used = false
 	controlling = false
+	successful = false
+	total_moves = 0
+	total_time = 0.0
+	time_between_turns.clear()
+	curr_turn_time = 0.0
 	Engine.time_scale = 1.0
 	for n in get_children():
 		remove_child(n)
@@ -554,6 +578,13 @@ func reset_game():
 	get_parent().get_node("gameover_timer").start()
 
 """HELPER FUNCTIONS"""
+
+func mean(array):
+	var mean = 0.0
+	for i in array:
+		mean += i
+	mean = mean / array.size()
+	return mean
 
 func is_null(array):
 	for i in array:
@@ -763,11 +794,16 @@ func _on_collapse_timer_timeout():
 func _on_refill_timer_timeout():
 	spawn_pieces()
 
-func _on_gameover_timer_timeout():
-	end_game()
-
 func _on_reset_button_pressed():
 	reset_game()
 
-func _on_goal_counter_end_game():
+func _on_goal_counter_end_game(goal_type, success):
+	successful = success
+	match goal_type:
+		0:
+			curr_goal = "score"
+		1:
+			curr_goal = "clear"
+		2:
+			curr_goal = "res clear"
 	end_game()

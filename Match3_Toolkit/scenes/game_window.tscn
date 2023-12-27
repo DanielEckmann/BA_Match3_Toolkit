@@ -132,6 +132,7 @@ text = "Restart"
 [connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
 [connection signal="end_game" from="GoalCounter" to="grid" method="_on_goal_counter_end_game"]
 [connection signal="timeout" from="gameover_timer" to="grid" method="_on_gameover_timer_timeout"]
+[connection signal="timeout" from="gameover_timer" to="GoalCounter" method="_on_gameover_timer_timeout"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/Timer" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/Score" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="grid" method="_on_reset_button_pressed"]
