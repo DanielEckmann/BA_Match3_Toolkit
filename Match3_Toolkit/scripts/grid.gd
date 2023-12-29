@@ -80,6 +80,7 @@ var remove_obstacle_prefab = preload("res://scenes/pieces/obstacles/removable_ob
 var timebomb_prefab = preload("res://scenes/pieces/obstacles/time_bomb.tscn")
 var bomb_dict = {}
 var grow_obs_list = []
+var grow_obs_destroyed = false
 class Tile_data:
 	var pos: Vector2
 	var color: colors
@@ -170,6 +171,12 @@ func collapse_position(pos):
 				if n.color == curr.color && !visited_pieces.has(n):
 					queue.push_back(n)
 					visited_pieces.append(n)
+	
+	var tile = shape[shape.size()/2]
+	if shape.size() >= 5:
+		bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.COLOR
+	elif shape.size() >= 4:
+		bomb_dict[Tile_data.new(tile.pos, tile.color)] = bomb_types.VERTICAL
 	
 	for p in shape:
 		var neighbors = get_neighbors(pixel_to_grid(p.pos), false)
@@ -407,6 +414,7 @@ func match_at(column, row, type):
 func turn_end():
 	state = states.MOVE
 	p_bomb_used = false
+	grow_obs_destroyed = false
 	var grid_empty = true
 	for i in width:
 		for j in height:
@@ -470,7 +478,7 @@ func spawn_bombs():
 func grow_obstacles():
 	#for p in grow_obs_list:
 		#instantiate_growing_obstacle(p)
-	if grow_obs_list.is_empty():
+	if grow_obs_list.is_empty() || grow_obs_destroyed:
 		return
 	grow_obs_list.shuffle()
 	var o = grow_obs_list[0]
@@ -764,6 +772,9 @@ func _on_grow_obstacle(pos):
 		break
 	
 	grow_obs_list.append(to_replace.pos)
+
+func _on_grow_obstacle_destroyed():
+	grow_obs_destroyed = true
 
 func _on_bomb_destroyed(position, type, color):
 	var pos = pixel_to_grid(position)
