@@ -42,7 +42,7 @@ func _on_reset_button_pressed():
 
 func _on_grid_score_update(value, color):
 	if goal == goals.RES_CLEAR:
-		if color == piece_to_clear:
+		if color == piece_to_clear && color != clearable_pieces.JELLYFISH && color != clearable_pieces.OBSTACLE:
 			goal_pieces_destroyed += 1
 
 func _on_gameover_timer_timeout():
@@ -50,3 +50,7 @@ func _on_gameover_timer_timeout():
 		emit_signal("end_game", goal, true)
 	else:
 		emit_signal("end_game", goal, false)
+
+
+func _on_grid_reset():
+	goal_pieces_destroyed = 0

@@ -62,7 +62,6 @@ texture = ExtResource("3_ugvqe")
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("4_m8tuw")
-use_collapse = true
 width = 8
 height = 10
 start = Vector2(64, 800)
@@ -71,9 +70,6 @@ y_offset = 2
 use_bombs = true
 p_bomb_limit = 3
 color_count = 6
-blocked_elements = PackedVector2Array(1, 1, 6, 1, 1, 8, 6, 8, 4, 4)
-growing_obstacles = PackedVector2Array(3, 4)
-jellyfish = PackedVector2Array(1, 1, 6, 1, 1, 8, 6, 8, 4, 4)
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -89,9 +85,8 @@ one_shot = true
 
 [node name="GoalCounter" type="Node2D" parent="."]
 script = ExtResource("5_w6cps")
-goal = 2
 piece_to_clear = 6
-needed_piece_count = 5
+needed_piece_count = 3
 
 [node name="gameover_timer" type="Timer" parent="."]
 wait_time = 120.0
@@ -122,6 +117,7 @@ text = "Restart"
 
 [connection signal="game_over" from="grid" to="GameOverScreen" method="_on_grid_game_over"]
 [connection signal="grid_empty" from="grid" to="GoalCounter" method="_on_grid_grid_empty"]
+[connection signal="reset" from="grid" to="GoalCounter" method="_on_grid_reset"]
 [connection signal="score_update" from="grid" to="top_ui/Score" method="_on_grid_score_update"]
 [connection signal="score_update" from="grid" to="GoalCounter" method="_on_grid_score_update"]
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]

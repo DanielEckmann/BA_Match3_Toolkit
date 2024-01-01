@@ -12,6 +12,7 @@ var state
 signal score_update(value, color)
 signal game_over()
 signal grid_empty()
+signal reset()
 
 # Control Type
 @export var use_collapse: bool
@@ -291,17 +292,6 @@ func spawn_pieces():
 			bomb.move(grid_to_pixel(b.x, b.y))
 			all_pieces[b.x][b.y] = bomb
 		
-		for j in jellyfish:
-			randomize()
-			type_arr.shuffle()
-			var type = type_arr[0]
-			var jelly = jellyfish_prefab.instantiate()
-			add_child(jelly)
-			jelly.set_attributes(type, sprites[type], 1)
-			jelly.set_position(grid_to_pixel(j.x, j.y + y_offset))
-			jelly.move(grid_to_pixel(j.x, j.y))
-			all_pieces[j.x][j.y] = jelly
-		
 		for i in width:
 			for j in height:
 				if all_pieces[i][j] != null:
@@ -325,6 +315,18 @@ func spawn_pieces():
 				piece.set_position(grid_to_pixel(i, j + y_offset))
 				piece.move(grid_to_pixel(i, j))
 				all_pieces[i][j] = piece
+		
+		for j in jellyfish:
+			var type = all_pieces[j.x][j.y].color
+			var jelly = jellyfish_prefab.instantiate()
+			add_child(jelly)
+			jelly.set_attributes(type, sprites[type], 1)
+			jelly.set_position(grid_to_pixel(j.x, j.y + y_offset))
+			jelly.move(grid_to_pixel(j.x, j.y))
+			if all_pieces[j.x][j.y] != null:
+				all_pieces[j.x][j.y].queue_free()
+			all_pieces[j.x][j.y] = jelly
+		
 		for i in width:
 			for j in height:
 				all_pieces[i][j].moved = false
@@ -427,7 +429,6 @@ func match_at(column, row, type):
 func turn_end():
 	state = states.MOVE
 	p_bomb_used = false
-	grow_obs_destroyed = false
 	var grid_empty = true
 	for i in width:
 		for j in height:
@@ -437,6 +438,8 @@ func turn_end():
 	
 	grow_obstacles()
 	grow_obs_list = []
+	
+	grow_obs_destroyed = false
 	
 	total_moves += 1
 	time_between_turns.append(curr_turn_time)
@@ -549,6 +552,7 @@ func instantiate_bomb(pos, color, type):
 	bomb.set_position(pos)
 	bomb.move(pos)
 	if all_pieces[piece_pos.x][piece_pos.y] != null:
+		all_pieces[piece_pos.x][piece_pos.y].destroy()
 		all_pieces[piece_pos.x][piece_pos.y].queue_free()
 	all_pieces[piece_pos.x][piece_pos.y] = bomb
 
@@ -559,6 +563,7 @@ func instantiate_growing_obstacle(pos):
 	obs.move(pos)
 	var piece_pos = pixel_to_grid(pos)
 	if all_pieces[piece_pos.x][piece_pos.y] != null:
+		all_pieces[piece_pos.x][piece_pos.y].destroy()
 		all_pieces[piece_pos.x][piece_pos.y].queue_free()
 	all_pieces[piece_pos.x][piece_pos.y] = obs
 
@@ -569,7 +574,7 @@ func end_game():
 	
 	var score = $"../top_ui/Score".get_score()
 	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
-	var f = FileAccess.open("./tests/collapse_slime_blocked_low.csv", FileAccess.READ_WRITE)
+	var f = FileAccess.open("./tests/collapse_slime_blocked_rem.csv", FileAccess.READ_WRITE)
 	f.seek_end(0)
 	f.store_csv_line(csv_line)
 	f.close()
@@ -583,6 +588,7 @@ func reset_game():
 	total_time = 0.0
 	time_between_turns.clear()
 	curr_turn_time = 0.0
+	emit_signal("reset")
 	Engine.time_scale = 1.0
 	for n in get_children():
 		remove_child(n)

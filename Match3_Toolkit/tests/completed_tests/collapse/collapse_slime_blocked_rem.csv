@@ -1,0 +1,33 @@
+Total time,Mean time between moves,Total moves,Score,Goal type,Successful
+30.935615,3.383589,9,37,res clear,true
+28.365532,3.098024,9,31,res clear,true
+13.832780,2.216578,6,21,res clear,true
+25.648974,2.790629,9,36,res clear,true
+21.182486,2.921312,7,24,res clear,true
+12.449502,1.740407,7,8,res clear,true
+20.199192,2.449902,8,24,res clear,true
+21.532472,2.639478,8,34,res clear,true
+23.132408,2.822804,8,27,res clear,true
+21.165820,2.288797,9,20,res clear,true
+
+41.033473,3.386124,12,63,res clear,true
+60.764236,2.862584,21,93,res clear,true
+46.748130,3.845679,12,86,res clear,true
+29.398824,2.863219,10,60,res clear,true
+73.697052,3.042239,24,90,res clear,true
+82.573835,3.033599,27,146,res clear,true
+46.050000,2.853125,16,68,res clear,true
+38.400000,2.365476,14,53,res clear,true
+74.433333,3.089583,24,91,res clear,true
+41.466667,2.552083,16,33,res clear,true
+
+41.668203,3.759232,11,95,res clear,true
+63.634953,3.704017,17,164,res clear,true
+85.516573,2.660414,32,157,res clear,true
+118.303601,3.674593,32,181,res clear,true
+120.003808,3.739702,32,166,res clear,false
+39.690794,3.555226,11,82,res clear,true
+116.614160,2.702655,43,201,res clear,true
+106.616667,3.318229,32,169,res clear,true
+109.713671,3.121820,35,150,res clear,true
+99.996000,3.208474,31,163,res clear,true

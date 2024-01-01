@@ -9,7 +9,8 @@ func _ready():
 	super._ready()
 
 func destroy():
-	pass
+	emit_signal("grow_obstacle_destroyed")
+	super.destroy()
 
 func set_color(color, sprite):
 	pass
