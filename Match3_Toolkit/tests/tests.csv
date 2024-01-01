@@ -2,3 +2,5 @@ Total time,Mean time between moves,Total moves,Score,Goal type,Successful
 39.203406,6.771806,4,32,score,false
 23.683333,5.033333,4,47,score,false
 120.001047,28.678580,3,10,score,true
+65.607011,1.929618,34,80,clear,true
+74.980334,1.874508,40,80,clear,true

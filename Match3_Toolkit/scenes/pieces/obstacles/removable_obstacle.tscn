@@ -6,6 +6,7 @@
 
 [node name="removable_obstacle" instance=ExtResource("1_c7xwr")]
 script = ExtResource("2_1trbs")
+color = 6
 movable = false
 
 [node name="Sprite2D" parent="." index="0"]

@@ -434,7 +434,7 @@ func turn_end():
 
 func damage(array):
 	for i in array:
-		if ! i.shielded:
+		if !i.shielded:
 			i.take_damage(1)
 
 # This function was taken from source outlined at the top
@@ -556,7 +556,7 @@ func end_game():
 	
 	var score = $"../top_ui/Score".get_score()
 	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
-	var f = FileAccess.open("./tests/tests.csv", FileAccess.READ_WRITE)
+	var f = FileAccess.open("./tests/collapse_removable_high.csv", FileAccess.READ_WRITE)
 	f.seek_end(0)
 	f.store_csv_line(csv_line)
 	f.close()
@@ -781,20 +781,20 @@ func _on_bomb_destroyed(position, type, color):
 	
 	if type == bomb_types.HORIZONTAL:
 		for i in width:
-			all_pieces[i][pos.y].matched = true
+			all_pieces[i][pos.y].destroy()
 	elif type == bomb_types.VERTICAL:
 		for j in height:
-			all_pieces[pos.x][j].matched = true
+			all_pieces[pos.x][j].destroy()
 	elif type == bomb_types.COLOR:
 		for i in width:
 			for j in height:
 				if all_pieces[i][j].color == color:
-					all_pieces[i][j].matched = true
+					all_pieces[i][j].destroy()
 	elif type == bomb_types.RADIUS:
 		var neighbors = get_neighbors(pos, true)
 		if neighbors != null:
 			for p in neighbors:
-				p.matched = true
+				p.destroy()
 
 func _on_destroy_timer_timeout():
 	destroy_matched()

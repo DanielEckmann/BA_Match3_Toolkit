@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://oqwq8fpbhcav"
+
+[deps]
+
+files=["res://tests/completed_tests/collapse/medium/collapse_removable_medium.Mean time between moves.translation", "res://tests/completed_tests/collapse/medium/collapse_removable_medium.Total moves.translation", "res://tests/completed_tests/collapse/medium/collapse_removable_medium.Score.translation", "res://tests/completed_tests/collapse/medium/collapse_removable_medium.Goal type.translation", "res://tests/completed_tests/collapse/medium/collapse_removable_medium.Successful.translation"]
+
+source_file="res://tests/completed_tests/collapse/medium/collapse_removable_medium.csv"
+dest_files=["res://tests/completed_tests/collapse/medium/collapse_removable_medium.Mean time between moves.translation", "res://tests/completed_tests/collapse/medium/collapse_removable_medium.Total moves.translation", "res://tests/completed_tests/collapse/medium/collapse_removable_medium.Score.translation", "res://tests/completed_tests/collapse/medium/collapse_removable_medium.Goal type.translation", "res://tests/completed_tests/collapse/medium/collapse_removable_medium.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0
