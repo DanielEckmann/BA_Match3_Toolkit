@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://b37jm1vx1q4yy"
+
+[deps]
+
+files=["res://tests/collapse_slime_blocked_low.Mean time between moves.translation", "res://tests/collapse_slime_blocked_low.Total moves.translation", "res://tests/collapse_slime_blocked_low.Score.translation", "res://tests/collapse_slime_blocked_low.Goal type.translation", "res://tests/collapse_slime_blocked_low.Successful.translation"]
+
+source_file="res://tests/collapse_slime_blocked_low.csv"
+dest_files=["res://tests/collapse_slime_blocked_low.Mean time between moves.translation", "res://tests/collapse_slime_blocked_low.Total moves.translation", "res://tests/collapse_slime_blocked_low.Score.translation", "res://tests/collapse_slime_blocked_low.Goal type.translation", "res://tests/collapse_slime_blocked_low.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0

@@ -34,6 +34,7 @@ signal grid_empty()
 @export var growing_obstacles: PackedVector2Array
 @export var shielded_pieces: PackedVector2Array
 @export var time_bombs: PackedVector2Array
+@export var jellyfish: PackedVector2Array
 
 var sprites = [
 	preload("res://Match 3 Assets/Pieces/Yellow Piece.png"),
@@ -78,6 +79,7 @@ var grow_obstacle_prefab = preload("res://scenes/pieces/obstacles/growing_obstac
 var move_obstacle_prefab = preload("res://scenes/pieces/obstacles/movable_obstacle.tscn")
 var remove_obstacle_prefab = preload("res://scenes/pieces/obstacles/removable_obstacle.tscn")
 var timebomb_prefab = preload("res://scenes/pieces/obstacles/time_bomb.tscn")
+var jellyfish_prefab = preload("res://scenes/pieces/gadgets/jellyfish.tscn")
 var bomb_dict = {}
 var grow_obs_list = []
 var grow_obs_destroyed = false
@@ -288,6 +290,17 @@ func spawn_pieces():
 			bomb.set_position(grid_to_pixel(b.x, b.y + y_offset))
 			bomb.move(grid_to_pixel(b.x, b.y))
 			all_pieces[b.x][b.y] = bomb
+		
+		for j in jellyfish:
+			randomize()
+			type_arr.shuffle()
+			var type = type_arr[0]
+			var jelly = jellyfish_prefab.instantiate()
+			add_child(jelly)
+			jelly.set_attributes(type, sprites[type], 1)
+			jelly.set_position(grid_to_pixel(j.x, j.y + y_offset))
+			jelly.move(grid_to_pixel(j.x, j.y))
+			all_pieces[j.x][j.y] = jelly
 		
 		for i in width:
 			for j in height:
@@ -556,7 +569,7 @@ func end_game():
 	
 	var score = $"../top_ui/Score".get_score()
 	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
-	var f = FileAccess.open("./tests/collapse_removable_high.csv", FileAccess.READ_WRITE)
+	var f = FileAccess.open("./tests/collapse_slime_blocked_low.csv", FileAccess.READ_WRITE)
 	f.seek_end(0)
 	f.store_csv_line(csv_line)
 	f.close()
