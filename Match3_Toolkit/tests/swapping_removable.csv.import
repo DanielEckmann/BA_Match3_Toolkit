@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://ff6045lfmiql"
+
+[deps]
+
+files=["res://tests/swapping_removable.Mean time between moves.translation", "res://tests/swapping_removable.Total moves.translation", "res://tests/swapping_removable.Score.translation", "res://tests/swapping_removable.Goal type.translation", "res://tests/swapping_removable.Successful.translation"]
+
+source_file="res://tests/swapping_removable.csv"
+dest_files=["res://tests/swapping_removable.Mean time between moves.translation", "res://tests/swapping_removable.Total moves.translation", "res://tests/swapping_removable.Score.translation", "res://tests/swapping_removable.Goal type.translation", "res://tests/swapping_removable.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0

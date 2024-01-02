@@ -574,7 +574,7 @@ func end_game():
 	
 	var score = $"../top_ui/Score".get_score()
 	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
-	var f = FileAccess.open("./tests/collapse_slime_blocked_rem.csv", FileAccess.READ_WRITE)
+	var f = FileAccess.open("./tests/swapping_removable.csv", FileAccess.READ_WRITE)
 	f.seek_end(0)
 	f.store_csv_line(csv_line)
 	f.close()

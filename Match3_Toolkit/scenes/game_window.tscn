@@ -70,6 +70,7 @@ y_offset = 2
 use_bombs = true
 p_bomb_limit = 3
 color_count = 6
+removable_obstacles = PackedVector2Array(1, 1, 6, 1, 1, 8, 6, 8, 4, 4)
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -85,8 +86,9 @@ one_shot = true
 
 [node name="GoalCounter" type="Node2D" parent="."]
 script = ExtResource("5_w6cps")
-piece_to_clear = 6
-needed_piece_count = 3
+goal = 2
+piece_to_clear = 7
+needed_piece_count = 5
 
 [node name="gameover_timer" type="Timer" parent="."]
 wait_time = 120.0

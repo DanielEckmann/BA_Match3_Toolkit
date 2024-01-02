@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dk5ayocy3qvrt"
+
+[deps]
+
+files=["res://tests/completed_tests/swap/swapping_movingobs.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_movingobs.Total moves.translation", "res://tests/completed_tests/swap/swapping_movingobs.Score.translation", "res://tests/completed_tests/swap/swapping_movingobs.Goal type.translation", "res://tests/completed_tests/swap/swapping_movingobs.Successful.translation"]
+
+source_file="res://tests/completed_tests/swap/swapping_movingobs.csv"
+dest_files=["res://tests/completed_tests/swap/swapping_movingobs.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_movingobs.Total moves.translation", "res://tests/completed_tests/swap/swapping_movingobs.Score.translation", "res://tests/completed_tests/swap/swapping_movingobs.Goal type.translation", "res://tests/completed_tests/swap/swapping_movingobs.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0

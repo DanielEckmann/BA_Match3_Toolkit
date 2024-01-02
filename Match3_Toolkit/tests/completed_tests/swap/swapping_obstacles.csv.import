@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bekbvov63t5al"
+
+[deps]
+
+files=["res://tests/completed_tests/swap/swapping_obstacles.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_obstacles.Total moves.translation", "res://tests/completed_tests/swap/swapping_obstacles.Score.translation", "res://tests/completed_tests/swap/swapping_obstacles.Goal type.translation", "res://tests/completed_tests/swap/swapping_obstacles.Successful.translation"]
+
+source_file="res://tests/completed_tests/swap/swapping_obstacles.csv"
+dest_files=["res://tests/completed_tests/swap/swapping_obstacles.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_obstacles.Total moves.translation", "res://tests/completed_tests/swap/swapping_obstacles.Score.translation", "res://tests/completed_tests/swap/swapping_obstacles.Goal type.translation", "res://tests/completed_tests/swap/swapping_obstacles.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0
