@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cup1m8egcnomv"
+
+[deps]
+
+files=["res://tests/completed_tests/swap/swapping_shielded.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_shielded.Total moves.translation", "res://tests/completed_tests/swap/swapping_shielded.Score.translation", "res://tests/completed_tests/swap/swapping_shielded.Goal type.translation", "res://tests/completed_tests/swap/swapping_shielded.Successful.translation"]
+
+source_file="res://tests/completed_tests/swap/swapping_shielded.csv"
+dest_files=["res://tests/completed_tests/swap/swapping_shielded.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_shielded.Total moves.translation", "res://tests/completed_tests/swap/swapping_shielded.Score.translation", "res://tests/completed_tests/swap/swapping_shielded.Goal type.translation", "res://tests/completed_tests/swap/swapping_shielded.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0

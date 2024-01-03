@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dggty4n3v0qkh"
+
+[deps]
+
+files=["res://tests/completed_tests/swap/swapping_slime_blocked.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_slime_blocked.Total moves.translation", "res://tests/completed_tests/swap/swapping_slime_blocked.Score.translation", "res://tests/completed_tests/swap/swapping_slime_blocked.Goal type.translation", "res://tests/completed_tests/swap/swapping_slime_blocked.Successful.translation"]
+
+source_file="res://tests/completed_tests/swap/swapping_slime_blocked.csv"
+dest_files=["res://tests/completed_tests/swap/swapping_slime_blocked.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_slime_blocked.Total moves.translation", "res://tests/completed_tests/swap/swapping_slime_blocked.Score.translation", "res://tests/completed_tests/swap/swapping_slime_blocked.Goal type.translation", "res://tests/completed_tests/swap/swapping_slime_blocked.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0

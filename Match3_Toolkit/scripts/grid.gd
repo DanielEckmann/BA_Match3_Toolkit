@@ -574,7 +574,7 @@ func end_game():
 	
 	var score = $"../top_ui/Score".get_score()
 	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
-	var f = FileAccess.open("./tests/swapping_obs_removable.csv", FileAccess.READ_WRITE)
+	var f = FileAccess.open("./tests/swapping_time_removable.csv", FileAccess.READ_WRITE)
 	f.seek_end(0)
 	f.store_csv_line(csv_line)
 	f.close()
@@ -660,7 +660,7 @@ func get_shapes():
 	for i in width:
 		for j in height:
 			var piece = all_pieces[i][j]
-			if all_pieces[i][j] == null:
+			if all_pieces[i][j] == null || all_pieces[i][j].shielded:
 				continue
 			if checked_pieces.has(piece) || piece.color == colors.NONE:
 				continue
@@ -676,7 +676,7 @@ func get_shapes():
 				var neighbors = get_horizontal_neighbors(pixel_to_grid(curr.pos))
 				if neighbors != null:
 					for n in neighbors:
-						if n.color == curr.color && !visited.has(n):
+						if n.color == curr.color && !visited.has(n) && !n.shielded:
 							queue.push_back(n)
 							visited.append(n)
 			
@@ -698,7 +698,7 @@ func get_shapes():
 				var neighbors = get_vertical_neighbors(pixel_to_grid(curr.pos))
 				if neighbors != null:
 					for n in neighbors:
-						if n.color == curr.color && !visited.has(n):
+						if n.color == curr.color && !visited.has(n) && !n.shielded:
 							queue.push_back(n)
 							visited.append(n)
 			

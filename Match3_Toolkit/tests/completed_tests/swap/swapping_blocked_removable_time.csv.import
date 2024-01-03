@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://db2pxfogt0k32"
+
+[deps]
+
+files=["res://tests/completed_tests/swap/swapping_blocked_removable_time.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_blocked_removable_time.Total moves.translation", "res://tests/completed_tests/swap/swapping_blocked_removable_time.Score.translation", "res://tests/completed_tests/swap/swapping_blocked_removable_time.Goal type.translation", "res://tests/completed_tests/swap/swapping_blocked_removable_time.Successful.translation"]
+
+source_file="res://tests/completed_tests/swap/swapping_blocked_removable_time.csv"
+dest_files=["res://tests/completed_tests/swap/swapping_blocked_removable_time.Mean time between moves.translation", "res://tests/completed_tests/swap/swapping_blocked_removable_time.Total moves.translation", "res://tests/completed_tests/swap/swapping_blocked_removable_time.Score.translation", "res://tests/completed_tests/swap/swapping_blocked_removable_time.Goal type.translation", "res://tests/completed_tests/swap/swapping_blocked_removable_time.Successful.translation"]
+
+[params]
+
+compress=true
+delimiter=0
