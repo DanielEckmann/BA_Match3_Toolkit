@@ -1,27 +1,33 @@
 Total time,Mean time between moves,Total moves,Score,Goal type,Successful
 9.038221,4.160777,2,6,res clear,true
-8.966650,2.288883,3,31,res clear,true
-11.750000,3.755556,3,32,res clear,true
+8.96665,2.288883,3,31,res clear,true
+11.75,3.755556,3,32,res clear,true
 9.833333,2.961111,3,26,res clear,true
 13.166667,2.563333,5,17,res clear,true
 22.417393,4.030145,5,35,res clear,true
 15.683333,3.043333,5,17,res clear,true
 8.616667,2.616667,3,14,res clear,true
-15.183333,2.850000,5,15,res clear,true
+15.183333,2.85,5,15,res clear,true
 4.733333,2.133333,2,8,res clear,true
-
-50.038801,4.110180,12,77,res clear,true
-55.747770,2.910410,19,73,res clear,true
+,,,,,
+average time,average move time,average moves,average score,,success rate
+11.938893,3.0403138,3.6,20.1,,100%
+,,,,,
+50.038801,4.11018,12,77,res clear,true
+55.74777,2.91041,19,73,res clear,true
 43.698252,3.315252,13,42,res clear,true
 23.449062,2.851969,8,29,res clear,true
 52.533531,3.250014,16,59,res clear,true
 57.014386,4.009363,14,87,res clear,true
 56.064424,3.187127,17,89,res clear,true
-40.831700,3.329033,12,76,res clear,true
+40.8317,3.329033,12,76,res clear,true
 39.098436,3.191539,12,50,res clear,true
-84.350000,3.479861,24,147,res clear,true
-
-63.755120,3.321322,19,121,res clear,true
+84.35,3.479861,24,147,res clear,true
+,,,,,
+average time,average move time,average moves,average score,,success rate
+50.2826362,3.3634748,14.7,43.8,,100%
+,,,,,
+63.75512,3.321322,19,121,res clear,true
 47.216667,3.304762,14,76,res clear,true
 60.430916,2.852267,21,103,res clear,true
 59.714278,2.949882,19,81,res clear,true
@@ -29,5 +35,8 @@ Total time,Mean time between moves,Total moves,Score,Goal type,Successful
 74.666667,4.358824,17,132,res clear,true
 43.333333,2.834444,15,110,res clear,true
 45.798849,2.916595,15,82,res clear,true
-65.664040,3.424424,19,150,res clear,true
+65.66404,3.424424,19,150,res clear,true
 76.313614,3.034545,25,136,res clear,true
+,,,,,
+average time,average move time,average moves,average score,,success rate
+60.0268483,3.1995874,18.5,109.3,,100%

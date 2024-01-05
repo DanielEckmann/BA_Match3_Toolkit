@@ -1,33 +1,42 @@
 Total time,Mean time between moves,Total moves,Score,Goal type,Successful
-90.737546,6.449110,14,95,res clear,true
+90.737546,6.44911,14,95,res clear,true
 71.316667,5.748611,12,72,res clear,true
 51.947922,8.469106,6,46,res clear,true
 43.014946,5.251873,8,39,res clear,true
-55.739437,4.950560,11,58,res clear,true
+55.739437,4.95056,11,58,res clear,true
 5.991665,1.887499,2,4,res clear,true
 62.616667,5.484848,11,57,res clear,true
 120.016667,5.401515,22,115,res clear,false
 33.449264,5.380441,6,26,res clear,true
 78.196872,7.252091,7,38,res clear,true
-
+,,,,,
+average time,average move time,average moves,average score,,success rate
+61.3027653,5.6275654,9.9,55,,90%
+,,,,,
 71.740244,6.321848,11,143,res clear,true
-38.165140,7.056384,5,70,res clear,true
+38.16514,7.056384,5,70,res clear,true
 120.011866,4.723422,24,129,res clear,false
-24.332360,3.368913,7,30,res clear,true
-108.412330,5.133128,21,220,res clear,true
-120.016661,5.250000,22,138,res clear,false
+24.33236,3.368913,7,30,res clear,true
+108.41233,5.133128,21,220,res clear,true
+120.016661,5.25,22,138,res clear,false
 120.015365,4.411497,26,169,res clear,false
 120.011866,7.045797,17,99,res clear,false
 120.012451,9.033009,13,71,res clear,false
 85.983333,5.016667,17,133,res clear,true
-
+,,,,,
+average time,average move time,average moves,average score,,success rate
+92.8701616,5.7360665,16.3,120.2,,50%
+,,,,,
 120.008299,8.024997,11,41,res clear,false
 120.001905,7.436577,16,143,res clear,false
 120.004941,6.190616,19,93,res clear,false
 120.011866,5.606125,21,103,res clear,false
-120.008332,8.487500,14,84,res clear,false
+120.008332,8.4875,14,84,res clear,false
 120.015351,6.185901,19,144,res clear,false
 120.007516,7.600517,15,58,res clear,false
 120.016667,5.720833,20,104,res clear,false
 120.015367,6.743073,17,133,res clear,false
-120.011866,5.629140,21,154,res clear,false
+120.011866,5.62914,21,154,res clear,false
+,,,,,
+average time,average move time,average moves,average score,,success rate
+120.010211,6.7625279,17.3,105.7,,0%

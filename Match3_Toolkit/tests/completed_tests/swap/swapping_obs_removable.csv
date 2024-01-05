@@ -1,33 +1,42 @@
 Total time,Mean time between moves,Total moves,Score,Goal type,Successful
-33.537442,4.322034,7,39,res clear,true
-56.114422,5.049798,11,51,res clear,true
-95.112862,4.972608,19,78,res clear,true
-84.996600,6.964999,12,116,res clear,true
-116.270763,5.498608,21,98,res clear,true
-46.900000,5.750000,8,41,res clear,true
-99.104635,5.160770,19,165,res clear,true
-36.485580,5.544840,6,30,res clear,true
-47.864752,4.699812,10,51,res clear,true
-20.199614,4.704070,4,27,res clear,true
-
-28.136618,5.384000,5,35,res clear,true
+28.136618,5.384,5,35,res clear,true
 23.515726,5.474781,4,38,res clear,true
 77.846886,5.392641,14,59,res clear,true
 31.215418,5.066464,6,26,res clear,true
 31.615402,5.589776,5,33,res clear,true
 67.983333,4.433333,15,94,res clear,true
 53.083333,4.313889,12,51,res clear,true
-26.550000,4.390000,5,27,res clear,true
+26.55,4.39,5,27,res clear,true
 22.516667,4.929167,4,22,res clear,true
-27.732413,4.227640,6,23,res clear,true
-
+27.732413,4.22764,6,23,res clear,true
+,,,,,
+average time,average move time,average moves,average score,,success rate
+39.0195796,4.9201691,7.6,40.8,,100%
+,,,,,
+33.537442,4.322034,7,39,res clear,true
+56.114422,5.049798,11,51,res clear,true
+95.112862,4.972608,19,78,res clear,true
+84.9966,6.964999,12,116,res clear,true
+116.270763,5.498608,21,98,res clear,true
+46.9,5.75,8,41,res clear,true
+99.104635,5.16077,19,165,res clear,true
+36.48558,5.54484,6,30,res clear,true
+47.864752,4.699812,10,51,res clear,true
+20.199614,4.70407,4,27,res clear,true
+,,,,,
+average time,average move time,average moves,average score,,success rate
+63.658667,5.2667539,11.7,69.6,,100%
+,,,,,
 120.016667,4.603846,26,125,res clear,false
 120.005492,5.650264,21,128,res clear,false
-120.002154,5.864280,20,173,res clear,false
+120.002154,5.86428,20,173,res clear,false
 95.453461,4.516039,21,129,res clear,true
-40.881698,4.004840,10,78,res clear,true
+40.881698,4.00484,10,78,res clear,true
 71.297148,6.764544,9,104,res clear,true
 58.014346,5.052828,11,87,res clear,true
 47.614762,4.704812,10,95,res clear,true
-71.250000,5.405128,13,92,res clear,true
+71.25,5.405128,13,92,res clear,true
 120.009596,4.751052,25,155,res clear,false
+,,,,,
+average time,average move time,average moves,average score,,success rate
+86.4545324,5.1317633,16.6,116.6,,60%

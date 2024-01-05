@@ -8,19 +8,25 @@ Total time,Mean time between moves,Total moves,Score,Goal type,Successful
 90.383333,6.394048,14,97,res clear,true
 120.013707,6.541507,18,125,res clear,false
 24.699012,4.779809,5,33,res clear,true
-75.413650,6.790637,11,73,res clear,true
-
+75.41365,6.790637,11,73,res clear,true
+,,,,,
+average time,average move time,average moves,average score,,success rate
+78.4073949,5.6948942,13.1,81,,70%
+,,,,,
 120.000317,6.289491,19,105,res clear,false
 120.011866,6.124755,18,121,res clear,false
 120.011866,5.120085,23,151,res clear,false
 120.008332,5.857083,20,192,res clear,false
-63.416667,6.260000,10,121,res clear,true
-120.012799,4.767180,25,141,res clear,false
+63.416667,6.26,10,121,res clear,true
+120.012799,4.76718,25,141,res clear,false
 120.011866,7.890795,15,156,res clear,false
 120.008332,6.289912,19,107,res clear,false
 120.015359,4.727951,25,140,res clear,false
 94.512886,4.420458,21,127,res clear,true
-
+,,,,,
+average time,average move time,average moves,average score,,success rate
+111.801029,5.774771,19.5,136.1,,20%
+,,,,,
 120.003047,4.884928,23,128,res clear,false
 120.011866,4.856472,10,48,res clear,false
 120.002774,6.262427,19,111,res clear,false
@@ -31,3 +37,6 @@ Total time,Mean time between moves,Total moves,Score,Goal type,Successful
 120.012991,6.140017,17,83,res clear,false
 120.007123,5.603705,20,119,res clear,false
 120.000165,5.860553,19,108,res clear,false
+,,,,,
+average time,average move time,average moves,average score,,success rate
+120.0085383,5.567035,17.9,112.4,,0%
