@@ -68,10 +68,11 @@ start = Vector2(64, 800)
 offset = 64
 y_offset = 2
 use_bombs = true
+use_p_bombs = true
 p_bomb_limit = 3
 color_count = 6
-removable_obstacles = PackedVector2Array(1, 1, 6, 1, 1, 8, 6, 8, 4, 4, 3, 4, 0, 0, 7, 0, 0, 9, 7, 9, 3, 0, 4, 0, 0, 3, 7, 3, 0, 6, 7, 6, 2, 5, 5, 5, 3, 7, 4, 7)
-time_bombs = PackedVector2Array(3, 5, 4, 5, 0, 4, 7, 4, 4, 9)
+blocked_elements = PackedVector2Array(1, 1, 1, 8, 6, 1, 6, 8, 3, 4)
+jellyfish = PackedVector2Array(1, 1, 1, 8, 6, 1, 6, 8, 3, 4)
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -88,8 +89,8 @@ one_shot = true
 [node name="GoalCounter" type="Node2D" parent="."]
 script = ExtResource("5_w6cps")
 goal = 2
-piece_to_clear = 7
-needed_piece_count = 20
+piece_to_clear = 6
+needed_piece_count = 5
 
 [node name="gameover_timer" type="Timer" parent="."]
 wait_time = 120.0

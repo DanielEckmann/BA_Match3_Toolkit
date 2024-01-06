@@ -574,7 +574,7 @@ func end_game():
 	
 	var score = $"../top_ui/Score".get_score()
 	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
-	var f = FileAccess.open("./tests/swapping_time_removable.csv", FileAccess.READ_WRITE)
+	var f = FileAccess.open("./tests/swapping_blocked_paint.csv", FileAccess.READ_WRITE)
 	f.seek_end(0)
 	f.store_csv_line(csv_line)
 	f.close()
@@ -582,6 +582,7 @@ func end_game():
 func reset_game():
 	state = states.WAIT
 	p_bomb_used = false
+	p_bomb_limit = 3
 	controlling = false
 	successful = false
 	total_moves = 0
