@@ -25,6 +25,7 @@ signal reset()
 @export var y_offset: int
 @export var use_bombs: bool
 @export var use_p_bombs: bool
+@export var p_bomb_color: colors
 @export var p_bomb_limit: int
 @export var no_refill: bool
 @export var color_count: int
@@ -129,7 +130,7 @@ func _process(delta):
 func _input(event):
 	if Input.is_action_just_pressed("right_click") && use_p_bombs:
 		if !p_bomb_used && state == states.MOVE && is_in_grid(pixel_to_grid(get_global_mouse_position())):
-			paint_bomb(pixel_to_grid(get_global_mouse_position()), colors.BLUE)
+			paint_bomb(pixel_to_grid(get_global_mouse_position()), p_bomb_color)
 	
 	if Input.is_action_just_pressed("ui_touch"):
 		if state == states.MOVE && is_in_grid(pixel_to_grid(get_global_mouse_position())):

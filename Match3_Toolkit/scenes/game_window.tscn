@@ -69,6 +69,7 @@ offset = 64
 y_offset = 2
 use_bombs = true
 use_p_bombs = true
+p_bomb_color = 3
 p_bomb_limit = 3
 color_count = 6
 blocked_elements = PackedVector2Array(1, 1, 1, 8, 6, 1, 6, 8, 3, 4)
