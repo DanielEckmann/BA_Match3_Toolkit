@@ -72,8 +72,6 @@ use_p_bombs = true
 p_bomb_color = 5
 p_bomb_limit = 3
 color_count = 6
-shielded_pieces = PackedVector2Array(1, 1)
-jellyfish = PackedVector2Array(1, 1)
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -89,7 +87,6 @@ one_shot = true
 
 [node name="GoalCounter" type="Node2D" parent="."]
 script = ExtResource("5_w6cps")
-goal = 2
 piece_to_clear = 6
 needed_piece_count = 1
 

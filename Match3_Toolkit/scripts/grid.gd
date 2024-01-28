@@ -39,39 +39,39 @@ signal reset()
 @export var jellyfish: PackedVector2Array
 
 var sprites = [
-	preload("res://Match 3 Assets/Pieces/Yellow Piece.png"),
-	preload("res://Match 3 Assets/Pieces/Pink Piece.png"),
-	preload("res://Match 3 Assets/Pieces/Orange Piece.png"),
-	preload("res://Match 3 Assets/Pieces/Light Green Piece.png"),
-	preload("res://Match 3 Assets/Pieces/Green Piece.png"),
-	preload("res://Match 3 Assets/Pieces/Blue Piece.png")
+	preload("res://Match 3 Assets/new_pieces/yellow.png"),
+	preload("res://Match 3 Assets/new_pieces/pink.png"),
+	preload("res://Match 3 Assets/new_pieces/orange.png"),
+	preload("res://Match 3 Assets/new_pieces/light_green.png"),
+	preload("res://Match 3 Assets/new_pieces/green.png"),
+	preload("res://Match 3 Assets/new_pieces/blue.png")
 ]
 
 var bomb_sprites = [
-	preload("res://Match 3 Assets/Pieces/Yellow Row.png"),
-	preload("res://Match 3 Assets/Pieces/Yellow Column.png"),
-	preload("res://Match 3 Assets/Pieces/Yellow Adjacent.png"),
-	preload("res://Match 3 Assets/Pieces/Rainbow.png"),
-	preload("res://Match 3 Assets/Pieces/Pink Row.png"),
-	preload("res://Match 3 Assets/Pieces/Pink Column.png"),
-	preload("res://Match 3 Assets/Pieces/Pink Adjacent.png"),
-	preload("res://Match 3 Assets/Pieces/Rainbow.png"),
-	preload("res://Match 3 Assets/Pieces/Orange Row.png"),
-	preload("res://Match 3 Assets/Pieces/Orange Column.png"),
-	preload("res://Match 3 Assets/Pieces/Orange Adjacent.png"),
-	preload("res://Match 3 Assets/Pieces/Rainbow.png"),
-	preload("res://Match 3 Assets/Pieces/Light Green Row.png"),
-	preload("res://Match 3 Assets/Pieces/Light Green Column.png"),
-	preload("res://Match 3 Assets/Pieces/Light Green Adjacent.png"),
-	preload("res://Match 3 Assets/Pieces/Rainbow.png"),
-	preload("res://Match 3 Assets/Pieces/Green Row.png"),
-	preload("res://Match 3 Assets/Pieces/Green Column.png"),
-	preload("res://Match 3 Assets/Pieces/Green Adjacent.png"),
-	preload("res://Match 3 Assets/Pieces/Rainbow.png"),
-	preload("res://Match 3 Assets/Pieces/Blue Row.png"),
-	preload("res://Match 3 Assets/Pieces/Blue Column.png"),
-	preload("res://Match 3 Assets/Pieces/Blue Adjacent.png"),
-	preload("res://Match 3 Assets/Pieces/Rainbow.png")
+	preload("res://Match 3 Assets/new_pieces/yellow_row.png"),
+	preload("res://Match 3 Assets/new_pieces/yellow_column.png"),
+	preload("res://Match 3 Assets/new_pieces/yellow_color.png"),
+	preload("res://Match 3 Assets/new_pieces/yellow_radius.png"),
+	preload("res://Match 3 Assets/new_pieces/pink_row.png"),
+	preload("res://Match 3 Assets/new_pieces/pink_column.png"),
+	preload("res://Match 3 Assets/new_pieces/pink_color.png"),
+	preload("res://Match 3 Assets/new_pieces/pink_radius.png"),
+	preload("res://Match 3 Assets/new_pieces/orange_row.png"),
+	preload("res://Match 3 Assets/new_pieces/orange_column.png"),
+	preload("res://Match 3 Assets/new_pieces/orange_color.png"),
+	preload("res://Match 3 Assets/new_pieces/orange_radius.png"),
+	preload("res://Match 3 Assets/new_pieces/light_green_row.png"),
+	preload("res://Match 3 Assets/new_pieces/light_green_column.png"),
+	preload("res://Match 3 Assets/new_pieces/light_green_color.png"),
+	preload("res://Match 3 Assets/new_pieces/light_green_radius.png"),
+	preload("res://Match 3 Assets/new_pieces/green_row.png"),
+	preload("res://Match 3 Assets/new_pieces/green_column.png"),
+	preload("res://Match 3 Assets/new_pieces/green_color.png"),
+	preload("res://Match 3 Assets/new_pieces/green_radius.png"),
+	preload("res://Match 3 Assets/new_pieces/blue_row.png"),
+	preload("res://Match 3 Assets/new_pieces/blue_column.png"),
+	preload("res://Match 3 Assets/new_pieces/blue_color.png"),
+	preload("res://Match 3 Assets/new_pieces/blue_radius.png")
 ]
 
 var piece_prefab = preload("res://scenes/pieces/piece.tscn")
@@ -575,7 +575,7 @@ func end_game():
 	
 	var score = $"../top_ui/Score".get_score()
 	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
-	var f = FileAccess.open("./tests/swapping_shielded_paint.csv", FileAccess.READ_WRITE)
+	var f = FileAccess.open("./tests/tests.csv", FileAccess.READ_WRITE)
 	f.seek_end(0)
 	f.store_csv_line(csv_line)
 	f.close()

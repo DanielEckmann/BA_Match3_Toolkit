@@ -21,8 +21,8 @@ var ver_matched = false
 var value = 1
 
 var pos
-var block_sprite = preload("res://Match 3 Assets/Obstacles/Locks.png")
-var shield_sprite = preload("res://Match 3 Assets/Obstacles/Ice.png")
+var block_sprite = preload("res://Match 3 Assets/new_obstacles/lock.png")
+var shield_sprite = preload("res://Match 3 Assets/new_obstacles/shield.png")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

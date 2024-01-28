@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://bqjh8mlm4bk2q" path="res://scenes/pieces/piece.tscn" id="1_6gjal"]
 [ext_resource type="Script" path="res://scripts/movable_obstacle.gd" id="2_ts2du"]
-[ext_resource type="Texture2D" uid="uid://b52bqg16lt0ai" path="res://Match 3 Assets/Obstacles/Dark_Concrete.png" id="3_3bhgv"]
+[ext_resource type="Texture2D" uid="uid://muypglfkvi5i" path="res://Match 3 Assets/new_obstacles/movable_obstacle.png" id="3_iofm1"]
 
 [node name="movable_obstacle" instance=ExtResource("1_6gjal")]
 script = ExtResource("2_ts2du")
 color = 6
 
 [node name="Sprite2D" parent="." index="0"]
-texture = ExtResource("3_3bhgv")
+texture = ExtResource("3_iofm1")
