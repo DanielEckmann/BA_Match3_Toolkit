@@ -1,10 +1,10 @@
-extends Panel
+extends Label
 
 var score = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	$ScoreLabel.text = "%d" % score
+	$".".text = "%d" % score
 
 func _on_grid_score_update(value, color):
 	score += value

@@ -573,7 +573,7 @@ func end_game():
 	emit_signal("game_over")
 	Engine.time_scale = 0.0
 	
-	var score = $"../top_ui/Score".get_score()
+	var score = $"../top_ui/ScoreLabel".get_score()
 	var csv_line = PackedStringArray(["%f" % total_time, "%f" % mean(time_between_turns), "%d" % total_moves, "%d" % score, curr_goal, successful])
 	var f = FileAccess.open("./tests/tests.csv", FileAccess.READ_WRITE)
 	f.seek_end(0)

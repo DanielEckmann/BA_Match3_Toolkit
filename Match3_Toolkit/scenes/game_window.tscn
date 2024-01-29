@@ -1,64 +1,65 @@
-[gd_scene load_steps=9 format=3 uid="uid://bu2asn0r1ys43"]
+[gd_scene load_steps=11 format=3 uid="uid://bu2asn0r1ys43"]
 
-[ext_resource type="Texture2D" uid="uid://d4mqvultcx3h6" path="res://Match 3 Assets/UI/Backgrounds/background 2.png" id="1_tuor0"]
-[ext_resource type="Texture2D" uid="uid://c8sxfx358r6tm" path="res://Match 3 Assets/UI/Top UI v 2.png" id="2_2k40v"]
-[ext_resource type="Texture2D" uid="uid://uqqjlwogfame" path="res://Match 3 Assets/UI/Bottom UI v 2.png" id="3_ugvqe"]
+[ext_resource type="Texture2D" uid="uid://ii8win14h0x5" path="res://Match 3 Assets/new_ui/background.png" id="1_juc05"]
+[ext_resource type="Texture2D" uid="uid://blj086t2255j0" path="res://Match 3 Assets/new_ui/top_ui.png" id="2_v42yj"]
 [ext_resource type="Script" path="res://scripts/Timer.gd" id="3_w8vw5"]
 [ext_resource type="Script" path="res://scripts/Score.gd" id="4_gr5cu"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="4_m8tuw"]
+[ext_resource type="Texture2D" uid="uid://df3sjwyv1u5vj" path="res://Match 3 Assets/new_ui/bottom_ui.png" id="5_t0jhv"]
 [ext_resource type="Script" path="res://scripts/GoalCounter.gd" id="5_w6cps"]
 [ext_resource type="Script" path="res://scripts/GameOverScreen.gd" id="8_ddpft"]
+
+[sub_resource type="Theme" id="Theme_4y26l"]
+default_font_size = 33
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 5
+
+[sub_resource type="Theme" id="Theme_a3gl2"]
+default_font_size = 26
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 5
 
 [node name="game_window" type="Node2D"]
 
 [node name="background" type="TextureRect" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("1_tuor0")
+texture = ExtResource("1_juc05")
 
 [node name="top_ui" type="TextureRect" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("2_2k40v")
+texture = ExtResource("2_v42yj")
 
-[node name="Timer" type="Panel" parent="top_ui"]
+[node name="TimerLabel" type="Label" parent="top_ui"]
 layout_mode = 0
-offset_left = 223.0
-offset_top = 27.0
-offset_right = 354.0
-offset_bottom = 126.0
-script = ExtResource("3_w8vw5")
-
-[node name="TimerLabel" type="Label" parent="top_ui/Timer"]
-layout_mode = 0
-offset_left = 4.0
-offset_right = 129.0
-offset_bottom = 99.0
+offset_left = 225.0
+offset_top = 48.0
+offset_right = 350.0
+offset_bottom = 147.0
+theme = SubResource("Theme_4y26l")
 text = "000"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("3_w8vw5")
 
-[node name="Score" type="Panel" parent="top_ui"]
+[node name="ScoreLabel" type="Label" parent="top_ui"]
 layout_mode = 0
-offset_left = 19.0
-offset_top = 30.0
-offset_right = 169.0
-offset_bottom = 70.0
-script = ExtResource("4_gr5cu")
-
-[node name="ScoreLabel" type="Label" parent="top_ui/Score"]
-layout_mode = 0
-offset_right = 149.0
-offset_bottom = 40.0
+offset_left = 18.0
+offset_top = 41.0
+offset_right = 167.0
+offset_bottom = 81.0
+theme = SubResource("Theme_a3gl2")
 text = "100"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("4_gr5cu")
 
 [node name="bottom_ui" type="TextureRect" parent="."]
 offset_top = 928.0
 offset_right = 576.0
 offset_bottom = 1020.0
-texture = ExtResource("3_ugvqe")
+texture = ExtResource("5_t0jhv")
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("4_m8tuw")
@@ -120,7 +121,7 @@ text = "Restart"
 [connection signal="game_over" from="grid" to="GameOverScreen" method="_on_grid_game_over"]
 [connection signal="grid_empty" from="grid" to="GoalCounter" method="_on_grid_grid_empty"]
 [connection signal="reset" from="grid" to="GoalCounter" method="_on_grid_reset"]
-[connection signal="score_update" from="grid" to="top_ui/Score" method="_on_grid_score_update"]
+[connection signal="score_update" from="grid" to="top_ui/ScoreLabel" method="_on_grid_score_update"]
 [connection signal="score_update" from="grid" to="GoalCounter" method="_on_grid_score_update"]
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 [connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
@@ -128,8 +129,8 @@ text = "Restart"
 [connection signal="end_game" from="GoalCounter" to="grid" method="_on_goal_counter_end_game"]
 [connection signal="timeout" from="gameover_timer" to="grid" method="_on_gameover_timer_timeout"]
 [connection signal="timeout" from="gameover_timer" to="GoalCounter" method="_on_gameover_timer_timeout"]
-[connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/Timer" method="_on_reset_button_pressed"]
-[connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/Score" method="_on_reset_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/TimerLabel" method="_on_reset_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/ResetButton" to="top_ui/ScoreLabel" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="grid" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="GoalCounter" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ResetButton" to="GameOverScreen" method="_on_reset_button_pressed"]
